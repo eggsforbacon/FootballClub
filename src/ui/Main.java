@@ -2,7 +2,7 @@ package ui;
 
 public class Main {
 
-  public String VERSION = "0.3-pre";
+  public String VERSION = "0.3.1-pre";
   public static void main(String[] args) {
     Menu m = new Menu();
     m.startprogram();
