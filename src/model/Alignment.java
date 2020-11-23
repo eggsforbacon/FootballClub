@@ -1,26 +1,10 @@
 package model;
-import java.util.*;
 
 public class Alignment {
 
   private String date;
   private String technique;
   private boolean[][] setting;
-
-  public Alignment() {
-    setting = new boolean[][] {
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false},
-      {false,false,false,false,false,false,false}
-    };
-  }
 
   public Alignment(String date, int index) {
     this.date = date;

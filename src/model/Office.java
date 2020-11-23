@@ -1,5 +1,5 @@
 package model;
 
-public class Offices {
+public class Office {
 
 }

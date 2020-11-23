@@ -4,7 +4,7 @@ public class DressingRoom {
 
   private Player[][] capacity;
 
-  public Player(Player[][] capacity) {
+  public DressingRoom(Player[][] capacity) {
     this.capacity = capacity;
   }
 
