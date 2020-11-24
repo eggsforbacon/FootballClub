@@ -12,4 +12,22 @@ abstract public class Employee {
       this.salary = salary;
       this.status = status;
   }
+
+  //Getters
+
+  public String getName() {
+    return name;
+  }
+
+  public String getID() {
+    return id;
+  }
+
+  public int getSalary() {
+    return salary;
+  }
+
+  public boolean getStatus() {
+    return status;
+  }
 }

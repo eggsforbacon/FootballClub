@@ -8,4 +8,10 @@ public class Trainer extends Employee {
         super(name,id,salary,status);
         this.xpYears = xpYears;
     }
+
+    //Getters
+
+    public int getXPYears() {
+        return xpYears;
+    }
 }
