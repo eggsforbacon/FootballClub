@@ -1,16 +1,18 @@
 package model;
 
-public class Office {
+public class Room {
 
-  private Trainer[][] spaces;
+  private Player[][] spaces;
   private String name;
+  private String team;
 
-  public Office(String name, int col, int row) {
+  public Room(String name, int col, int row, String team) {
     this.name = name;
-    spaces = new Trainer[col][row];
+    spaces = new Player[col][row];
+    this.team = team;
   }
 
-  public Trainer[][] getSpaces() {
+  public Player[][] getSpaces() {
     return spaces;
   }
 
@@ -18,23 +20,27 @@ public class Office {
     return name;
   }
 
-  public boolean trainerIn(Trainer trainer) {
-    boolean added = (!contains(trainer)) ? add(trainer) : false;
+  public String getTeam() {
+    return team;
+  }
+
+  public boolean playerIn(Player player) {
+    boolean added = (player.getTeam().equals(team) && !contains(player)) ? add(player) : false;
     return added;
   }
 
-  public boolean playerOut(Trainer trainer) {
-    boolean removed = (contains(trainer)) ? remove(trainer) : false;
+  public boolean playerOut(Player player) {
+    boolean removed = (contains(player)) ? remove(player) : false;
     return removed;
   }
 
-  private boolean add(Trainer trainer) {
+  private boolean add(Player player) {
     boolean flag = false;
 
     for (int i = 0; i < spaces.length && !flag; i++) {
       for (int j = 0; j < spaces[0].length; j++) {
         if (spaces[i][j] == null) {
-          spaces[i][j] = trainer;
+          spaces[i][j] = player;
           flag = true;
           break;
         }
@@ -44,12 +50,12 @@ public class Office {
     return flag;
   }
 
-  private boolean remove(Trainer trainer) {
+  private boolean remove(Player player) {
     boolean flag = false;
 
     for (int i = 0; i < spaces.length && !flag; i++) {
       for (int j = 0; j < spaces[0].length; j++) {
-        if (spaces[i][j].getName().equals(trainer.getName())) {
+        if (spaces[i][j].getName().equals(player.getName())) {
           spaces[i][j] = null;
           flag = true;
           break;
@@ -60,12 +66,12 @@ public class Office {
     return flag;
   }
 
-  private boolean contains(Trainer trainer) {
+  private boolean contains(Player player) {
     boolean flag = false;
 
     for (int i = 0; i < spaces.length; i++) {
       for (int j = 0; j < spaces[0].length; j++) {
-        if (spaces[i][j].getName().equals(trainer.getName())) {
+        if (spaces[i][j].getName().equals(player.getName())) {
           flag = true;
           break;
         }

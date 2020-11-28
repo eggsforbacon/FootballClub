@@ -8,13 +8,15 @@ public class Player extends Employee implements Calculations{
     private int goals;
     private double averageRating;
     private int posIndex;
+    private String team;
 
-    public Player(String name, String id, int salary, boolean status, int number, int goals, double averageRating, int posIndex) {
+    public Player(String name, String id, int salary, boolean status, int number, int goals, double averageRating, int posIndex, String team) {
         super(name,id,salary,status);
         this.number = number;
         this.goals = goals;
         this.averageRating = averageRating;
         this.posIndex = posIndex;
+        this.team = team;
     }
 
     @Override
@@ -56,4 +58,10 @@ public class Player extends Employee implements Calculations{
         }
         return level;
     }
+
+	public String getTeam() {
+        return team;
+	}
+
+
 }
