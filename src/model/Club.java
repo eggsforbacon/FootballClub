@@ -29,4 +29,72 @@ public class Club {
 
   }
 
+  //Getters
+
+  /**
+   * @return the clubName
+   */
+  public String getClubName() {
+  	return clubName;
+  }
+
+  /**
+   * @return the nIT
+   */
+  public String getNIT() {
+  	return NIT;
+  }
+
+  /**
+   * @return the foundationDate
+   */
+  public String getFoundationDate() {
+  	return foundationDate;
+  }
+
+  //Setters
+
+  /**
+   * @param clubName the clubName to set
+   */
+  public void setClubName(String clubName) {
+  	this.clubName = clubName;
+  }
+
+  /**
+   * @param nIT the nIT to set
+   */
+  public void setNIT(String nIT) {
+  	NIT = nIT;
+  }
+
+  /**
+   * @param foundationDate the foundationDate to set
+   */
+  public void setFoundationDate(String foundationDate) {
+  	this.foundationDate = foundationDate;
+  }
+
+  public ArrayList<String> showInfo() {
+    ArrayList<String> info = new ArrayList<>();
+    info.add("**Nombre: " + clubName);
+    info.add("**NIT: " + NIT);
+    info.add("**Fecha de fundacion: " + foundationDate);
+    info.add("**Cantidad de empleados: " + employees.size());
+    info.add("*Empleados:                                                                    *");
+
+    for (Employee e : employees) {
+      info.add("--------------------------------------------------------------------------------");
+      info.add("*Nombre del empleado: " + e.getName());
+      info.add("*Tipo de empleado: " + e.getClass());
+      info.add("*Estado: " + e.getStatus());
+      info.add("--------------------------------------------------------------------------------");
+    }
+    info.add("********************************************************************************");
+    info.add("*Volver                                                                 [ENTER]*");
+    info.add("********************************************************************************");
+
+    return info;
+  }
+
 }

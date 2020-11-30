@@ -23,7 +23,7 @@ public class Office {
     return added;
   }
 
-  public boolean playerOut(Trainer trainer) {
+  public boolean trainerOut(Trainer trainer) {
     boolean removed = (contains(trainer)) ? remove(trainer) : false;
     return removed;
   }
@@ -32,7 +32,8 @@ public class Office {
     boolean flag = false;
 
     for (int i = 0; i < spaces.length && !flag; i++) {
-      for (int j = 0; j < spaces[0].length; j++) {
+      int j = (i % 2 == 0) ? 0 : 1;
+      for (; j < spaces[0].length; j += 2) {
         if (spaces[i][j] == null) {
           spaces[i][j] = trainer;
           flag = true;

@@ -38,7 +38,8 @@ public class Room {
     boolean flag = false;
 
     for (int i = 0; i < spaces.length && !flag; i++) {
-      for (int j = 0; j < spaces[0].length; j++) {
+      int j = (i % 2 == 0) ? 0 : 1;
+      for ( ; j < spaces[0].length; j += 2) {
         if (spaces[i][j] == null) {
           spaces[i][j] = player;
           flag = true;

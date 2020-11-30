@@ -2,6 +2,10 @@ package ui;
 import model.*;
 import java.util.*;
 
+/**
+ *Class
+ *
+ */
 public class Menu {
 
   private int answer = 0;
@@ -23,7 +27,7 @@ public class Menu {
       first = true;
       createClub(in);
     }
-    
+
     do {
       showMainMenu(in);
     } while (!exit);
@@ -58,15 +62,16 @@ public class Menu {
     System.out.println("********************************************************************************");
     answer = in.nextInt();
     in.nextLine();
-    switchMainMenu();
+    switchMainMenu(in);
   }
 
-
-  private void switchMainMenu() throws IllegalStateException {
+  private void switchMainMenu(Scanner in) throws IllegalStateException {
     switch (answer) {
       case CLUB_DATA:
+        readClubData(in);
         break;
       case MODIFY_CLUB:
+        readModifyClub(in);
         break;
       case SEE_TEAMS:
         break;
@@ -82,7 +87,36 @@ public class Menu {
     }
   }
 
-  
+  private void readClubData(Scanner in) {
+    clear();
+    System.out.println("********************************************************************************");
+    for (int i = 0; i < iDontKnowSoccer.showInfo().size(); i++) {
+      System.out.println(iDontKnowSoccer.showInfo().get(i));
+    }
+    System.out.println();
+    in.nextLine();
+  }
+
+  private void readModifyClub(Scanner in) {
+    clear();
+    System.out.println("********************************************************************************");
+    System.out.println("*Desea modificar el nombre del club? [y/n]                                     *");
+    String string = (in.nextLine().equalsIgnoreCase("y")) ? in.nextLine() : iDontKnowSoccer.getClubName();
+    iDontKnowSoccer.setClubName(string);
+    System.out.println("********************************************************************************");
+    System.out.println("*Desea modificar el NIT del club? [y/n]                                        *");
+    string = (in.nextLine().equalsIgnoreCase("y")) ? in.nextLine() : iDontKnowSoccer.getNIT();
+    iDontKnowSoccer.setNIT(string);
+    System.out.println("********************************************************************************");
+    System.out.println("*Desea modificar la fecha de fundacion del club? [y/n]                         *");
+    string = (in.nextLine().equalsIgnoreCase("y")) ? in.nextLine() : iDontKnowSoccer.getFoundationDate();
+    iDontKnowSoccer.setFoundationDate(string);
+
+    System.out.println("********************************************************************************");
+    System.out.println("************************Datos modificados correctamente*************************");
+    wait(1000);
+  }
+
   private void clear() {
     try {
       final String OS = System.getProperty("os.name");
