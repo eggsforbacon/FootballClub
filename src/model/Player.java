@@ -7,16 +7,40 @@ public class Player extends Employee implements Calculations{
     private int number;
     private int goals;
     private double averageRating;
+    private String position;
     private int posIndex;
     private String team;
 
-    public Player(String name, String id, int salary, boolean status, int number, int goals, double averageRating, int posIndex, String team) {
+    /**
+     * @param name The name of the player.<br>
+     * @param id The id of the player.<br>
+     * @param salary The salary of the player.<br>
+     * @param status The status of the player.<br>
+     * @param number The shirt number of the player.<br>
+     * @param goals The number of goals in the club pf the player.<br>
+     * @param averageRating The average rating of the player.<br>
+     * @param posIndex The index to fetch the position of the player.<br>
+     */
+    public Player(String name, String id, int salary, boolean status, int number, int goals, double averageRating, int posIndex) {
         super(name,id,salary,status);
         this.number = number;
         this.goals = goals;
         this.averageRating = averageRating;
         this.posIndex = posIndex;
-        this.team = team;
+        position = FieldPosition.get(posIndex).getName();
+    }
+
+    @Override
+    public String showInfo() {
+      return "" +
+            "*------------------------------------------------------------------------------*\n" +
+            "*Nombre del empleado: " + getName() + "\n" +
+            "*ID: " + getId() + "\n" +
+            "*Salario: " + getSalary() + "\n" +
+            "*Tipo de empleado: Jugador\n" +
+            "*Estado: " + getStatus() +
+            "*Equipo: " + team + "\n" +
+            "*Posicion y numero: " + position + "(" + number + ")";
     }
 
     @Override
@@ -59,9 +83,40 @@ public class Player extends Employee implements Calculations{
         return level;
     }
 
-	public String getTeam() {
-        return team;
-	}
+    //Getters
 
+    /**
+     * @return the number
+     */
+    public int getNumber() {
+    	return number;
+    }
 
+    /**
+     * @return the goals
+     */
+    public int getGoals() {
+    	return goals;
+    }
+
+    /**
+     * @return the averageRating
+     */
+    public double getAverageRating() {
+    	return averageRating;
+    }
+
+    /**
+     * @return the position
+     */
+    public String getPosition() {
+    	return position;
+    }
+
+    /**
+     * @return the team
+     */
+    public String getTeam() {
+    	return team;
+    }
 }

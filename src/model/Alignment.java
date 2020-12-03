@@ -6,7 +6,7 @@ public class Alignment {
   private String technique;
   private boolean[][] setting;
 
-  public Alignment(String date, int index) {
+  public Alignment(String date, int index, String stringSetting) {
     this.date = date;
     technique = Technique.get(index).getName();
     setting = new boolean[][] {
@@ -21,6 +21,7 @@ public class Alignment {
       {false,false,false,false,false,false,false},
       {false,false,false,false,false,false,false}
     };
+    setSetting(stringSetting);
   }
 
   public String revert() {
@@ -73,7 +74,14 @@ public class Alignment {
 
   //Setters
 
-  public void setSetting(int[] positions) {
+  public void setSetting(String stringSetting) {
+    String[] parsing = stringSetting.split("-");
+    int[] positions = new int[parsing.length];
+
+    for (int i = 0; i < positions.length; i++) {
+      positions[i] = Integer.parseInt(parsing[i]);
+    }
+
     if (positions.length == 3) {
       setting[3] = set(positions[2]);
       setting[6] = set(positions[1]);

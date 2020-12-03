@@ -13,19 +13,27 @@ public class Club {
   private Room roomB;
   private Office office;
 
+  /**
+   * @param clubName The name of the club.<br>
+   * @param NIT The identification number of the club.<br>
+   * @param foundationDate The date the club was founded.<br>
+   */
   public Club(String clubName, String NIT, String foundationDate) {
     // Club initialization
     this.clubName = clubName;
     this.NIT = NIT;
     this.foundationDate = foundationDate;
 
+    //Teams initialization
+
+    teamA = new Team("Equipo A");
+    teamB = new Team("Equipo B");
+
     // Rooms initialization
 
     roomA = new Room("Camerino A", 7, 6, "Equipo A");
     roomB = new Room("Camerino B", 7, 7, "Equipo B");
     office = new Office("Oficinas", 6, 6);
-
-    // Teams initialization
 
   }
 
@@ -52,6 +60,27 @@ public class Club {
   	return foundationDate;
   }
 
+  /**
+   * @return the teamA
+   */
+  public Team getTeamA() {
+  	return teamA;
+  }
+
+  /**
+   * @return the teamB
+   */
+  public Team getTeamB() {
+  	return teamB;
+  }
+
+  /**
+   * @return the employees
+   */
+  public ArrayList<Employee> getEmployees() {
+  	return employees;
+  }
+
   //Setters
 
   /**
@@ -75,6 +104,11 @@ public class Club {
   	this.foundationDate = foundationDate;
   }
 
+  /**
+   * Returns the information of the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The information of the club is shown.<br>
+   */
   public ArrayList<String> showInfo() {
     ArrayList<String> info = new ArrayList<>();
     info.add("**Nombre: " + clubName);
@@ -84,12 +118,9 @@ public class Club {
     info.add("*Empleados:                                                                    *");
 
     for (Employee e : employees) {
-      info.add("--------------------------------------------------------------------------------");
-      info.add("*Nombre del empleado: " + e.getName());
-      info.add("*Tipo de empleado: " + e.getClass());
-      info.add("*Estado: " + e.getStatus());
-      info.add("--------------------------------------------------------------------------------");
+      info.add(e.showInfo());
     }
+    info.add("*------------------------------------------------------------------------------*");
     info.add("********************************************************************************");
     info.add("*Volver                                                                 [ENTER]*");
     info.add("********************************************************************************");
