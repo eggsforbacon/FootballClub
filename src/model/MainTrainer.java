@@ -1,10 +1,20 @@
 package model;
 
+/**
+ * Specifies on Main trainers' behaviors and traits.<br>
+ * @author Samuel Hernandez <br>
+ * @since 0.1.<br>
+ */
 public class MainTrainer extends Trainer implements Calculations{
 
     private int numberOfTeams;
     private int wonMatches;
 
+    /**
+     * @see Trainer#Trainer(String, String, int, boolean, int, String) Trainer Constructor
+     * @param numberOfTeams The number of teams the trainer has lead. <b>Must be positive</b>.<br>
+     * @param wonMatches The number of matches the trainer has won. <b>Must be positive</b>.<br>
+     */
     public MainTrainer(String name, String id, int salary, boolean status, int xpYears, String team, int numberOfTeams, int wonMatches) {
         super(name,id,salary,status,xpYears,team);
         this.numberOfTeams = numberOfTeams;
@@ -23,7 +33,9 @@ public class MainTrainer extends Trainer implements Calculations{
             "*Lider del equipo: " + getTeam() + "\n" +
             "*Partidos ganados: " + wonMatches + "\n" +
             "*Equipos liderados: " + numberOfTeams + "\n" +
-            "*Anios de experiencia: " + getXPYears();
+            "*Anios de experiencia: " + getXPYears() + "\n" +
+            "*Precio de mercado: $" + marketPrice() + "\n" +
+            "*Nivel de estrella: " + starLevel();
     }
 
     @Override

@@ -1,7 +1,11 @@
 package model;
-
 import java.lang.reflect.Field;
 
+/**
+ * Specifies on the players' traits and behaviors.<br>
+ * @author Samuel Hernandez <br>
+ * @since 0.1.<br>
+ */
 public class Player extends Employee implements Calculations{
 
     private int number;
@@ -12,14 +16,11 @@ public class Player extends Employee implements Calculations{
     private String team;
 
     /**
-     * @param name The name of the player.<br>
-     * @param id The id of the player.<br>
-     * @param salary The salary of the player.<br>
-     * @param status The status of the player.<br>
-     * @param number The shirt number of the player.<br>
-     * @param goals The number of goals in the club pf the player.<br>
-     * @param averageRating The average rating of the player.<br>
-     * @param posIndex The index to fetch the position of the player.<br>
+     * @see Employee#Employee(String, String, int, boolean) Employee Constructor
+     * @param number The shirt number of the player. <b>Must be positive between 0 and 99</b>.<br>
+     * @param goals The number of goals in the club pf the player. <b>Must be positive</b>.<br>
+     * @param averageRating The average rating of the player. <b>Must be between 0 and 5</b>.<br>
+     * @param posIndex The index to fetch the position of the player. <b>Must be between 0 and 3</b>.<br>
      */
     public Player(String name, String id, int salary, boolean status, int number, int goals, double averageRating, int posIndex) {
         super(name,id,salary,status);
@@ -40,7 +41,9 @@ public class Player extends Employee implements Calculations{
             "*Tipo de empleado: Jugador\n" +
             "*Estado: " + getStatus() +
             "*Equipo: " + team + "\n" +
-            "*Posicion y numero: " + position + "(" + number + ")";
+            "*Posicion y numero: " + position + "(" + number + ")" + "\n" +
+            "*Precio de mercado: $" + marketPrice() + "\n" +
+            "*Nivel de estrella: " + starLevel();
     }
 
     @Override

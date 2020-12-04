@@ -1,7 +1,11 @@
 package model;
 
 import java.util.ArrayList;
-
+/**
+ * Cointainer class that links every other class together, along with determining what a club should behave like.<br>
+ * @author Samuel Hernandez <br>
+ * @since 0.1.<br>
+ */
 public class Club {
   private String clubName;
   private String NIT;

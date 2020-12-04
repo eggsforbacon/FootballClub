@@ -3,8 +3,9 @@ import model.*;
 import java.util.*;
 
 /**
- *Class
- *
+ * Class containing the program's flow algorithims.<br>
+ * @author Samuel Hernandez <br>
+ * @since 0.1.<br>
  */
 public class Menu {
 
@@ -44,7 +45,7 @@ public class Menu {
   *************************************************************************************************/
 
   /**
-   * Runs the methods in the main method over the class Main.<br>
+   * Runs the program with the specified algorithm.<br>
    * <b>Pre: </b>There is a main function defined.<br>
    * <b>Post: </b>The program is ran.<br>
    */
@@ -109,6 +110,12 @@ public class Menu {
                                         SELECTION MEMBERS
   *************************************************************************************************/
 
+  /**
+   * Runs the algorithim to show the club's information on screen.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The information of the club is shown.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void readClubData(Scanner in) {
     clear();
     System.out.println("********************************************************************************");
@@ -119,6 +126,12 @@ public class Menu {
     in.nextLine();
   }
 
+  /**
+   * Runs the algorithm to edit the club's information.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The information is edited succesfully.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void readModifyClub(Scanner in) {
     clear();
     System.out.println("********************************************************************************");
@@ -142,6 +155,12 @@ public class Menu {
     wait(1000);
   }
 
+  /**
+   * Runs the algorithm to see the club's teams' information.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The menu to select which team's information to see is displayed.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void readSeeTeams(Scanner in) {
     clear();
     System.out.println("********************************************************************************");
@@ -154,6 +173,12 @@ public class Menu {
     switchSeeTeams(in);
   }
 
+  /**
+   * Runs the algorithm to editthe club's teams' information.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The menu to select which team to edit is displayed.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void readEditTeams(Scanner in) {
     clear();
     System.out.println("********************************************************************************");
@@ -166,6 +191,12 @@ public class Menu {
     switchEditTeams(in);
   }
 
+  /**
+   * Runs the algorithim to edit the information of team A.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The information of the team is succesfully edited.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void readTeamA(Scanner in) throws IllegalStateException {
     System.out.println("*Desea modificar el nombre del equipo? [y/ANYKEY]                              *");
     strAnswer = in.nextLine();
@@ -198,6 +229,12 @@ public class Menu {
 
   }
 
+  /**
+   * Runs the algorithim to edit the information of team B.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The information of the team is succesfully edited.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void readTeamB(Scanner in) throws IllegalStateException {
     System.out.println("*Desea modificar el nombre del equipo? [y/ANYKEY]                              *");
     strAnswer = in.nextLine();
@@ -230,6 +267,12 @@ public class Menu {
 
   }
 
+  /**
+   * Runs the algorithm to edit the coach of a team specifically.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The coach of the specified team is changed.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private MainTrainer editCoach(Scanner in) {
     MainTrainer newTeamCoach = null;
     if (isInChangeMode) {
@@ -252,7 +295,14 @@ public class Menu {
     return newTeamCoach;
   }
 
-  private ArrayList<AssistingTrainer> editAssistants(Scanner in, Team team) {
+  /**
+   * Runs the algorithm to edit the assisting trainers of a team specifically.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The assisting trainers are edited for the specified team.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param team The specified team. <b>Must not be null</b>.<br>
+   */
+  private void editAssistants(Scanner in, Team team) {
     ArrayList<AssistingTrainer> newTeamAssistants = team.getAssistants();
     final int LIMIT_OF_ASSISTANTS = 3;
     int assistantsTreshold = LIMIT_OF_ASSISTANTS - newTeamAssistants.size();
@@ -302,9 +352,15 @@ public class Menu {
       newTeamAssistants = team.getAssistants();
       assistantsTreshold = LIMIT_OF_ASSISTANTS - newTeamAssistants.size();
     }
-    return newTeamAssistants;
   }
 
+  /**
+   * Runs the algorithm to edit the roster (players) of a team specifically.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The roster is edited for the specified team.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param team The specified team. <b>Must not be null</b>.<br>
+   */
   private ArrayList<Player> editRoster(Scanner in, Team team) {
     ArrayList<Player> newTeamRoster = team.getRoster();
     final int LIMIT_OF_PLAYERS = 25;
@@ -358,6 +414,13 @@ public class Menu {
     return newTeamRoster;
   }
 
+  /**
+   * Runs the algorithm to edit the alignments of a team specifically.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The alignments are edited for the specified team.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param team The specified team. <b>Must not be null</b>.<br>
+   */
   private void editAlignments(Scanner in, Team team) throws IllegalStateException {
     if (isInAddMode) {
       Alignment newAlig = null;
@@ -395,6 +458,12 @@ public class Menu {
                                             LOGIC MEMBERS
   *************************************************************************************************/
 
+  /**
+   * A logic algorithm that decides what to run according to user input on {@link #showMainMenu(Scanner) showMainMenu}.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The program proceeds with the correct algorithm.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void switchMainMenu(Scanner in) throws IllegalStateException {
     switch (answer) {
       case CLUB_DATA:
@@ -421,6 +490,12 @@ public class Menu {
     }
   }
 
+  /**
+   * A logic algorithm that decides what to do according to user input on {@link #readSeeTeams(Scanner) readSeeTeams}.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The program proceeds with the correct algorithm.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void switchSeeTeams(Scanner in) throws IllegalStateException {
     clear();
     System.out.println("********************************************************************************");
@@ -443,6 +518,12 @@ public class Menu {
     in.nextLine();
   }
 
+  /**
+   * A logic algorithm that decides what to do according to user input on {@link #readEditTeams(Scanner) readEditTeams}.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The program proceeds with the correct algorithm.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
   private void switchEditTeams(Scanner in) throws IllegalStateException {
     clear();
     System.out.println("********************************************************************************");
@@ -498,6 +579,11 @@ public class Menu {
     }
   }
 
+  /**
+   * Updates the logic fields everytime there is input.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The fields are updated.<br>
+   */
   private void update() {
     proceed = strAnswer.equalsIgnoreCase("y");
     isInChangeMode = strAnswer.equalsIgnoreCase("c");

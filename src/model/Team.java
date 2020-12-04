@@ -2,6 +2,11 @@ package model;
 
 import java.util.*;
 
+/**
+ * A class that describes how a team should behave on the app.<br>
+ * @author Samuel Hernandez <br>
+ * @since 0.1.<br>
+ */
 public class Team {
 
   private String teamName;
@@ -11,7 +16,7 @@ public class Team {
   private ArrayList<Alignment> alignments = new ArrayList<>(0);
 
   /**
-   * @param teamName The name of the team.<br>
+   * @param teamName The name of the team. <b>Must be unique, and not empty or null</b>.<br>
    */
   public Team(String teamName) {
     this.teamName = teamName;
@@ -22,7 +27,7 @@ public class Team {
    * Adds an alignment.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The alignment is added.<br>
-   * @param alig The alignment to be added.<br>
+   * @param alig The alignment to be added. <b>Must not be null</b>.<br>
    */
    public boolean addAlignment(Alignment alig) {
      if (contains(alig)) return false;
@@ -36,7 +41,7 @@ public class Team {
    * Adds assisting trainers to the team's roster.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The trainer is added to the team's roster.<br>
-   * @param asst The trainer that is going to be added.<br>
+   * @param asst The trainer that is going to be added. <b>Must not be null</b>.<br>
    */
   public boolean addAssistingTrainers(AssistingTrainer asst) {
     if (contains(asst)) return false;
@@ -50,7 +55,7 @@ public class Team {
    * Adds players to the team's roster.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The player is added to the team's roster.<br>
-   * @param player The player that is going to be added.<br>
+   * @param player The player that is going to be added. <b>Must not be null</b>.<br>
    */
   public boolean addPlayer(Player player) {
     if (contains(player)) return false;
@@ -64,6 +69,7 @@ public class Team {
    * Checks wether the trainer that will be added is already inside the team.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The fact whether the alignment exists inside the team is true or not is stated.<br>
+   * @param alig The alignment to be looked up. <b>Must not be null</b>.<br>
    */
    public boolean contains(Alignment alig) {
      boolean flag = false;
@@ -78,7 +84,7 @@ public class Team {
    * Checks wether the trainer that will be added is already inside the team.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The fact whether the assistant exists inside the team is true or not is stated.<br>
-   * @param asst The asssistant that will be looked up.<br>
+   * @param asst The asssistant that will be looked up. <b>Must not be null</b>.<br>
    */
   public boolean contains(AssistingTrainer asst) {
     boolean flag = false;
@@ -93,7 +99,7 @@ public class Team {
    * Checks wether the player that will be added is already inside the team.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The fact wheter the player exists inside the team is true or not is stated.<br>
-   * @param player The player that will be looked up.<br>
+   * @param player The player that will be looked up. <b>Must not be null</b>.<br>
    */
   public boolean contains(Player player) {
     boolean flag = false;
@@ -133,6 +139,28 @@ public class Team {
     } else {
       info.add("*No hay jugadores en el equipo por el momento.                                 *");
       info.add("********************************************************************************");
+    }
+    if (alignments.size() != 0) {
+      info.add("*Alineaciones:");
+      for (Alignment a : alignments) {
+        info.add("*Fecha: " + a.getDate());
+        info.add("*Formacion:                                                                    *");
+        info.add("-----------------------");
+        for (int i = 0; i < a.getSetting().length; i++) {
+          StringBuilder fieldrows = new StringBuilder();
+          fieldrows.append("|");
+          for (int j = 0; j < a.getSetting()[0].length; j++) {
+            String player = (a.getSetting()[i][j]) ? " 1 " : "   ";
+            fieldrows.append(player);
+          }
+          fieldrows.append("|");
+          info.add(fieldrows.toString());
+        }
+        info.add("-----------------------");
+        info.add("(" + a.revert() + ")");
+      }
+    } else {
+      info.add("*No hay alineaciones en el equipo por el momento");
     }
     info.add("********************************************************************************");
     info.add("*Volver                                                                 [ENTER]*");

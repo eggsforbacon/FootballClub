@@ -1,23 +1,32 @@
 package model;
 import java.util.*;
 
+/**
+ * Specifies on Assisting trainers' behaviors and traits.<br>
+ * @author Samuel Hernandez <br>
+ * @since 0.1.<br>
+ */
 public class AssistingTrainer extends Trainer {
 
-    private boolean proffessional;
+    private boolean isProffessional;
     private ArrayList<String> expertises = new ArrayList<>(0);
 
     /**
-     * @param
+     * @see Trainer#Trainer(String, String, int, boolean, int, String) Trainer Constructor
+     * @param isProffessional Whether the trainer was or not a proffessional player. <b>Data type restrictions</b>.<br>
+     * @param indexes The indexes of the expertises of the trainer. <b>Maximum size is 4, and must contain unique numbers between 0 and 3</b>.<br>
      */
-    public AssistingTrainer(String name, String id, int salary, boolean status, int xpYears, String team, boolean proffessional, int index) {
+    public AssistingTrainer(String name, String id, int salary, boolean status, int xpYears, String team, boolean isProffessional, ArrayList<Integer> indexes) {
         super(name,id,salary,status,xpYears,team);
-        this.proffessional = proffessional;
-        expertises.add(Expertise.get(index).getName());
+        this.isProffessional = isProffessional;
+        for (int i = 0; i < indexes.size(); i++) {
+          expertises.add(Expertise.get(i).getName());
+        }
     }
 
     @Override
     public String showInfo() {
-      String proffessionalToString = (proffessional) ? "Si" : "No";
+      String proffessionalToString = (isProffessional) ? "Si" : "No";
       StringBuilder expertisesToString = new StringBuilder();
       int i = 0;
       for (String s : expertises) {

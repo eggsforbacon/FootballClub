@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * Class that generalizes over employees' traits and behavior.<br>
+ * @author Samuel Hernandez <br>
+ * @since 0.1.<br>
+ */
 abstract public class Employee {
   String name;
   String id;
@@ -7,10 +12,10 @@ abstract public class Employee {
   boolean status;
 
   /**
-   * @param name The name of the employee.<br>
-   * @param id The id of the employee.<br>
-   * @param salary The salary of the employee.<br>
-   * @param status Wether the employee is active in a team or not.<br>
+   * @param name The name of the employee. <b>Must be unique, and not empty or null</b>.<br>
+   * @param id The id of the employee. <b>Must be unique, and not empty or null</b>.<br>
+   * @param salary The salary of the employee. <b>Must be positive</b>.<br>
+   * @param status Wether the employee is active in a team or not. <b>Data type restrictions</b>.<br>
    */
   public Employee(String name, String id, int salary, boolean status) {
       this.name = name;
@@ -19,6 +24,11 @@ abstract public class Employee {
       this.status = status;
   }
 
+  /**
+   * Returns the information of the employee, according to the type of employee.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The information of the employee is returned.<br>
+   */
   public abstract String showInfo();
 
   //Getters
