@@ -1,4 +1,5 @@
 package model;
+import java.util.*;
 
 /**
  * Class that generalizes over employees' traits and behavior.<br>
@@ -6,10 +7,11 @@ package model;
  * @since 0.1.<br>
  */
 abstract public class Employee {
-  String name;
-  String id;
-  int salary;
-  boolean status;
+  private String name;
+  private String id;
+  private int salary;
+  private boolean status;
+  private String key;
 
   /**
    * @param name The name of the employee. <b>Must be unique, and not empty or null</b>.<br>
@@ -22,6 +24,8 @@ abstract public class Employee {
       this.id = id;
       this.salary = salary;
       this.status = status;
+      key = "k-";
+      genKey();
   }
 
   /**
@@ -30,6 +34,19 @@ abstract public class Employee {
    * <b>Post: </b>The information of the employee is returned.<br>
    */
   public abstract String showInfo();
+
+  /**
+   * Generates a unique key for every employee.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The key is generated.<br>
+   */
+  private void genKey() {
+    Random ran = new Random();
+    String[] dictionary = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","0","1","2","3","4","5","6","7","8","9"};
+    for (int i = 0; i < 5; i++) {
+      key += dictionary[ran.nextInt(26)];
+    }
+  }
 
   //Getters
 
@@ -59,6 +76,13 @@ abstract public class Employee {
    */
   public boolean getStatus() {
     return status;
+  }
+
+  /**
+   * @return the key
+   */
+  public String getKey() {
+  	return key;
   }
 
   //Setters

@@ -28,10 +28,11 @@ public class Menu {
   ************************************************/
   private final int CLUB_DATA = 1;
   private final int MODIFY_CLUB = 2;
-  private final int SEE_TEAMS = 3;
-  private final int EDIT_TEAMS = 4;
-  private final int HIRE = 5;
-  private final int FIRE = 6;
+  private final int HIRE = 3;
+  private final int FIRE = 4;
+  private final int SEE_TEAMS = 5;
+  private final int EDIT_TEAMS = 6;
+  private final int EDIT_EMPLOYEE = 7;
   private boolean exit = false;
 
   /************************************************
@@ -94,10 +95,12 @@ public class Menu {
     System.out.println("********************************************************************************");
     System.out.println("*Ver datos del club:                                                        [1]*");
     System.out.println("*Modificar datos del club                                                   [2]*");
-    System.out.println("*Ver equipos                                                                [3]*");
-    System.out.println("*Editar equipos                                                             [4]*");
-    System.out.println("*Contratar empleado                                                         [5]*");
-    System.out.println("*Despedir empleado                                                          [6]*");
+    System.out.println("*Contratar empleado                                                         [3]*");
+    System.out.println("*Despedir empleado                                                          [4]*");
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Ver equipos                                                                [5]*");
+    System.out.println("*Editar equipos                                                             [6]*");
+    System.out.println("*Editar empleado                                                            [7]*");
     System.out.println("********************************************************************************");
     System.out.println("*Salir                                                                      [0]*");
     System.out.println("********************************************************************************");
@@ -209,10 +212,8 @@ public class Menu {
     System.out.println("*Desea cambiar o remover el entrenador principal? [c/r/x]");
     strAnswer = in.nextLine();
     update();
-    if (isInChangeMode || isInRemoveMode) {
-      iDontKnowSoccer.getTeamA().getCoach().setStatus(false);
-      iDontKnowSoccer.getTeamA().setCoach(editCoach(in));
-    } else if (!skipEdition) throw new IllegalStateException("Opcion invalida: " + strAnswer + "(" + skipEdition + ")");
+    if (isInChangeMode || isInRemoveMode) editCoach(in,iDontKnowSoccer.getTeamB());
+    else if (!skipEdition) throw new IllegalStateException("Opcion invalida: " + strAnswer + "(" + skipEdition + ")");
     System.out.println("*Desea aniadir o remover entrenadores asistentes? [a/r/x]                      *");
     strAnswer = in.nextLine();
     update();
@@ -247,10 +248,8 @@ public class Menu {
     System.out.println("*Desea cambiar o remover el entrenador principal? [c/r/x]");
     strAnswer = in.nextLine();
     update();
-    if (isInChangeMode || isInRemoveMode) {
-      iDontKnowSoccer.getTeamB().getCoach().setStatus(false);
-      iDontKnowSoccer.getTeamB().setCoach(editCoach(in));
-    } else if (!skipEdition) throw new IllegalStateException("Opcion invalida: " + strAnswer + "(" + skipEdition + ")");
+    if (isInChangeMode || isInRemoveMode) editCoach(in,iDontKnowSoccer.getTeamB());
+    else if (!skipEdition) throw new IllegalStateException("Opcion invalida: " + strAnswer + "(" + skipEdition + ")");
     System.out.println("*Desea aniadir o remover entrenadores asistentes? [a/r/x]                      *");
     strAnswer = in.nextLine();
     update();
@@ -272,27 +271,30 @@ public class Menu {
    * <b>Pre: </b><br>
    * <b>Post: </b>The coach of the specified team is changed.<br>
    * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param team The specified team. <b>Must not be null</b>.<br>
    */
-  private MainTrainer editCoach(Scanner in) {
-    MainTrainer newTeamCoach = null;
+  private void editCoach(Scanner in, Team team) {
+    team.getCoach().setStatus(false);
     if (isInChangeMode) {
       System.out.println("*------------------------------------------------------------------------------*");
       System.out.println("*Seleccione el nuevo entrenador principal escribiendo su nombre:               *");
       for (Employee e : iDontKnowSoccer.getEmployees()) {
         if (e instanceof MainTrainer) System.out.println("**" + e.getName());
       }
+      String theChanged = in.nextLine();
       for (Employee e : iDontKnowSoccer.getEmployees()) {
-        if (e instanceof MainTrainer && e.getName().equalsIgnoreCase(in.nextLine())) {
+        if (e instanceof MainTrainer && e.getName().equalsIgnoreCase(theChanged)) {
+          team.setCoach((MainTrainer)e);
           e.setStatus(true);
-          newTeamCoach = (MainTrainer)e;
           break;
         }
       }
     } else {
       System.out.println("*El entrenador principal sera removido                                         *");
+      team.setCoach(null);
       wait(1000);
     }
-    return newTeamCoach;
+
   }
 
   /**
@@ -303,9 +305,8 @@ public class Menu {
    * @param team The specified team. <b>Must not be null</b>.<br>
    */
   private void editAssistants(Scanner in, Team team) {
-    ArrayList<AssistingTrainer> newTeamAssistants = team.getAssistants();
     final int LIMIT_OF_ASSISTANTS = 3;
-    int assistantsTreshold = LIMIT_OF_ASSISTANTS - newTeamAssistants.size();
+    int assistantsTreshold = LIMIT_OF_ASSISTANTS - team.getAssistants().size();
     System.out.println("*------------------------------------------------------------------------------*");
     System.out.println("*Seleccione el entrenador que desea remover o aniadir escribiendo su nombre:   *");
     for (Employee e : iDontKnowSoccer.getEmployees()) {
@@ -318,8 +319,9 @@ public class Menu {
         break;
       }
       if (isInAddMode) {
+        String theAdded = in.nextLine();
         for (Employee e : iDontKnowSoccer.getEmployees()) {
-          if (e instanceof AssistingTrainer && e.getName().equalsIgnoreCase(in.nextLine())) {
+          if (e instanceof AssistingTrainer && e.getName().equalsIgnoreCase(theAdded)) {
             if (team.addAssistingTrainers((AssistingTrainer)e)) e.setStatus(true);
             else {
               System.out.println("*El entrenador ya se encuentra en el equipo                                    *");
@@ -330,8 +332,9 @@ public class Menu {
           }
         }
       } else {
+        String theDeleted = in.nextLine();
         for (Employee e : iDontKnowSoccer.getEmployees()) {
-          if (e instanceof AssistingTrainer && e.getName().equalsIgnoreCase(in.nextLine())) {
+          if (e instanceof AssistingTrainer && e.getName().equalsIgnoreCase(theDeleted)) {
             if (team.contains((AssistingTrainer)e)) {
               e.setStatus(false);
               team.getAssistants().remove(e);
@@ -349,8 +352,7 @@ public class Menu {
       System.out.println("*Desea seguir editando? [y/ANYKEY]                                             *");
       strAnswer = in.nextLine();
       update();
-      newTeamAssistants = team.getAssistants();
-      assistantsTreshold = LIMIT_OF_ASSISTANTS - newTeamAssistants.size();
+      assistantsTreshold = LIMIT_OF_ASSISTANTS - team.getAssistants().size();
     }
   }
 
@@ -361,10 +363,9 @@ public class Menu {
    * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
    * @param team The specified team. <b>Must not be null</b>.<br>
    */
-  private ArrayList<Player> editRoster(Scanner in, Team team) {
-    ArrayList<Player> newTeamRoster = team.getRoster();
+  private void editRoster(Scanner in, Team team) {
     final int LIMIT_OF_PLAYERS = 25;
-    int playerTreshold = LIMIT_OF_PLAYERS - newTeamRoster.size();
+    int playerTreshold = LIMIT_OF_PLAYERS - team.getRoster().size();
     System.out.println("*------------------------------------------------------------------------------*");
     System.out.println("*Seleccione el jugador que desea remover o aniadir escribiendo su nombre:      *");
     for (Employee e : iDontKnowSoccer.getEmployees()) {
@@ -377,8 +378,9 @@ public class Menu {
         break;
       }
       if (isInAddMode) {
+        String theAdded = in.nextLine();
         for (Employee e : iDontKnowSoccer.getEmployees()) {
-          if (e instanceof Player && e.getName().equalsIgnoreCase(in.nextLine())) {
+          if (e instanceof Player && e.getName().equalsIgnoreCase(theAdded)) {
             if (team.addPlayer((Player)e)) e.setStatus(true);
             else {
               System.out.println("*El jugador ya se encuentra en el equipo                                       *");
@@ -389,8 +391,9 @@ public class Menu {
           }
         }
       } else {
+        String theDeleted = in.nextLine();
         for (Employee e : iDontKnowSoccer.getEmployees()) {
-          if (e instanceof Player && e.getName().equalsIgnoreCase(in.nextLine())) {
+          if (e instanceof Player && e.getName().equalsIgnoreCase(theDeleted)) {
             if (team.contains((Player)e)) {
               e.setStatus(false);
               team.getRoster().remove(e);
@@ -408,10 +411,8 @@ public class Menu {
       System.out.println("*Desea seguir editando? [y/ANYKEY]                                             *");
       strAnswer = in.nextLine();
       update();
-      newTeamRoster = team.getRoster();
-      playerTreshold = LIMIT_OF_PLAYERS - newTeamRoster.size();
+      playerTreshold = LIMIT_OF_PLAYERS - team.getRoster().size();
     }
-    return newTeamRoster;
   }
 
   /**
@@ -423,7 +424,6 @@ public class Menu {
    */
   private void editAlignments(Scanner in, Team team) throws IllegalStateException {
     if (isInAddMode) {
-      Alignment newAlig = null;
       System.out.println("*------------------------------------------------------------------------------*");
       System.out.println("*Digite la fecha de la alineacion [DD/MM/AAAA]:                                *");
       String newDate = in.nextLine();
@@ -439,9 +439,7 @@ public class Menu {
       System.out.println("*------------------------------------------------------------------------------*");
       System.out.println("*Digite la formacion (De tal manera que sume 10, por ejemplo 4-4-2, con \"-\"):  *");
       String newSetting = in.nextLine();
-
-      newAlig = new Alignment(newDate, newIndex, newSetting);
-      team.addAlignment(newAlig);
+      team.addAlignment(newDate, newIndex, newSetting);
     } else {
       System.out.println("*--------------------------------------------------------------------------------*");
       System.out.println("*Digite el numero de alineacion que desea eliminar:                              *");
@@ -472,15 +470,17 @@ public class Menu {
       case MODIFY_CLUB:
         readModifyClub(in);
         break;
+      case HIRE:
+        break;
+      case FIRE:
+        break;
       case SEE_TEAMS:
         readSeeTeams(in);
         break;
       case EDIT_TEAMS:
         readEditTeams(in);
         break;
-      case HIRE:
-        break;
-      case FIRE:
+      case EDIT_EMPLOYEE:
         break;
       case 0:
         exit = true;

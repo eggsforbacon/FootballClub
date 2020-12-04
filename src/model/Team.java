@@ -27,9 +27,12 @@ public class Team {
    * Adds an alignment.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The alignment is added.<br>
-   * @param alig The alignment to be added. <b>Must not be null</b>.<br>
+   * @param newDate The date of the alignment to be added. <b>Must not be empty or null</b>.<br>
+   * @param newIndex The index of the technique the alignment to be added will use. <b>Must be positive between 0 and 3</b>.<br>
+   * @param newSetting The setting for the alignment to be addedd. <b>Must be unique, and not empty or null</b>.<br>
    */
-   public boolean addAlignment(Alignment alig) {
+   public boolean addAlignment(String newDate, int newIndex, String newSetting) {
+     Alignment alig = new Alignment(newDate, newIndex, newSetting);
      if (contains(alig)) return false;
      else {
        alignments.add(alig);
@@ -89,7 +92,7 @@ public class Team {
   public boolean contains(AssistingTrainer asst) {
     boolean flag = false;
     for (AssistingTrainer a : assistants) {
-        flag = (a.getName().equals(asst.getName()));
+        flag = (a.getKey().equals(asst.getKey()));
         if (flag) break;
     }
     return flag;
@@ -104,7 +107,7 @@ public class Team {
   public boolean contains(Player player) {
     boolean flag = false;
     for (Player p : roster) {
-        flag = (p.getName().equals(player.getName()));
+        flag = (p.getKey().equals(player.getKey()));
         if (flag) break;
     }
     return flag;
