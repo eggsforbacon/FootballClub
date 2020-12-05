@@ -34,6 +34,8 @@ public class Menu {
   private final int SEE_TEAMS = 5;
   private final int EDIT_TEAMS = 6;
   private final int EDIT_EMPLOYEE = 7;
+  private final int ROOMS = 8;
+  private final int OFFICES = 9;
   private boolean exit = false;
 
   /************************************************
@@ -109,6 +111,9 @@ public class Menu {
     System.out.println("*Ver equipos                                                                [5]*");
     System.out.println("*Editar equipos                                                             [6]*");
     System.out.println("*Editar empleado                                                            [7]*");
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Ingresar o remover un jugador de un camerino                               [8]*");
+    System.out.println("*Ingresar o remover un entrenador de las oficinas                           [9]*");
     System.out.println("********************************************************************************");
     System.out.println("*Salir                                                                      [0]*");
     System.out.println("********************************************************************************");
@@ -184,6 +189,7 @@ public class Menu {
     System.out.println("********************************************************************************");
     answer = in.nextInt();
     switchHire(in);
+    wait(1000);
   }
 
   /**
@@ -287,7 +293,20 @@ public class Menu {
     }
     int removeIndex = in.nextInt() - 1;
     in.nextLine();
-    iDontKnowSoccer.fire(removeIndex);
+
+    System.out.println("*Esta segurx que desea despedir a " + iDontKnowSoccer.getEmployees().get(removeIndex).getName() + "? [y/ANYKEY]");
+    proceedAnswer = in.nextLine();
+    update();
+    if (proceed) {
+      iDontKnowSoccer.fire(removeIndex);
+
+      System.out.println("********************************************************************************");
+      System.out.println("************************Empleado despedido correctamente************************");
+    } else {
+      System.out.println("********************************************************************************");
+      System.out.println("***********************************Cancelado************************************");
+      wait(1000);
+    }
   }
 
   /**
@@ -686,6 +705,10 @@ public class Menu {
     } else if (iDontKnowSoccer.getEmployees().get(editedEmployeeIndex) instanceof AssistingTrainer) {
       editAssistingTrainer(in, newEmployeeInfo, editedEmployeeIndex);
     }
+
+    System.out.println("********************************************************************************");
+    System.out.println("**********************Se termino de editar el empleado**************************");
+    wait(1000);
   }
 
   /**
@@ -840,6 +863,37 @@ public class Menu {
     iDontKnowSoccer.edit(editedEmployeeIndex, newEmployeeInfo, newXpyears, newProffessional, newExpertises);
   }
 
+  /**
+   * Runs the algorithim to edit the dressing rooms of the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The rooms are edited correctly.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
+  private void readDressingRooms(Scanner in) throws IllegalArgumentException {
+    clear();
+    System.out.println("********************************************************************************");
+    System.out.println("*Desea aniaidr or remover un jugador? [a/r/x]                                    *");
+    strAnswer = in.nextLine();
+    update();
+    System.out.println("********************************************************************************");
+    if (isInAddMode) {
+      System.out.println("*Que jugador desea aniadir al camerino?                                        *");
+      for (Employee e : iDontKnowSoccer.getEmployees()) {
+        if (e instanceof Player) System.out.println("** " + e.getName());
+      }
+      System.out.println(iDontKnowSoccer.addToRoom(in.nextLine()));
+      wait(1000);
+    } else if (isInRemoveMode) {
+      System.out.println("*Que jugador desea remover del camerino?                                       *");
+      for (Employee e : iDontKnowSoccer.getEmployees()) {
+        if (e instanceof Player) System.out.println("** " + e.getName());
+      }
+      System.out.println(iDontKnowSoccer.removeFromRoom(in.nextLine()));
+      wait(1000);
+    } else if (!skipEdition) throw new IllegalArgumentException("La opcion no fue reconocida: " + strAnswer + "(" + skipEdition + ")");
+
+  }
+
   /*************************************************************************************************
                                             LOGIC MEMBERS
   *************************************************************************************************/
@@ -872,6 +926,9 @@ public class Menu {
         break;
       case EDIT_EMPLOYEE:
         readEditEmployee(in);
+        break;
+      case ROOMS:
+        readDressingRooms(in);
         break;
       case 0:
         exit = true;
@@ -930,6 +987,7 @@ public class Menu {
       default:
         throw new IllegalStateException("Valor desconocido (????): " + answer);
     }
+    wait(1000);
   }
 
   /**

@@ -30,7 +30,7 @@ public class Room {
    * @param player The player to be allowed in. <b>Must not be null</b>.<br>
    */
   public boolean playerIn(Player player) {
-    boolean added = (player.getTeam().equals(team) && !contains(player)) ? add(player) : false;
+    boolean added = (player.getTeam().equalsIgnoreCase(team) && !contains(player)) ? add(player) : false;
     return added;
   }
 
@@ -62,7 +62,7 @@ public class Room {
           flag = true;
           break;
         }
-      }
+      } if (flag) break;
     }
 
     return flag;
@@ -79,12 +79,12 @@ public class Room {
 
     for (int i = 0; i < spaces.length && !flag; i++) {
       for (int j = 0; j < spaces[0].length; j++) {
-        if (spaces[i][j].getKey().equals(player.getKey())) {
+        if (spaces[i][j].getName().equalsIgnoreCase(player.getName())) {
           spaces[i][j] = null;
           flag = true;
           break;
         }
-      }
+      } if (flag) break;
     }
 
     return flag;
@@ -102,10 +102,11 @@ public class Room {
     try {
       for (int i = 0; i < spaces.length; i++) {
         for (int j = 0; j < spaces[0].length; j++) {
-          if (spaces[i][j].getKey().equals(player.getKey())) {
+          if (spaces[i][j].getName().equalsIgnoreCase(player.getName())) {
             flag = true;
             break;
           }
+          if (flag) break;
         }
       }
     } catch(NullPointerException npe) {

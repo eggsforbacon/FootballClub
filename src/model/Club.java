@@ -262,6 +262,56 @@ public class Club {
   }
 
   /**
+   * Adds a player to a room.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The player is added to a room.<br>
+   * @param playerName The name of the player to be added.<br>
+   */
+  public String addToRoom(String playerName) {
+    String opMsg = "";
+    boolean breaks = false;
+    for (Employee e: employees) {
+      if (e.getName().equalsIgnoreCase(playerName)) {
+        if (e.getTeam().equalsIgnoreCase(teamA.getTeamName())) {
+          opMsg = (roomA.playerIn((Player)e)) ? "**El jugador ha sido agregado: " + roomA.contains((Player)e) : "**El jugador no pudo ser agregado: " + roomA.contains((Player)e);
+        }
+        else if (e.getTeam().equalsIgnoreCase(teamB.getTeamName())) {
+          opMsg = (roomB.playerIn((Player)e)) ? "**El jugador ha sido agregado: " + roomB.contains((Player)e) : "**El jugador no pudo ser agregado: " + roomB.contains((Player)e);
+        }
+        breaks = true;
+      }
+      if (breaks) continue;
+    }
+    if (!breaks) opMsg = "*El jugador ingresado no fue reconocido";
+    return opMsg;
+  }
+
+  /**
+   * Removes a player from a room.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The player is removed from a room.<br>
+   * @param playerName The name of the player to be added.<br>
+   */
+  public String removeFromRoom(String playerName) {
+    String opMsg = "";
+    boolean breaks = false;
+    for (Employee e: employees) {
+      if (e.getName().equalsIgnoreCase(playerName)) {
+        if (e.getTeam().equalsIgnoreCase(teamA.getTeamName())) {
+          opMsg = (roomA.playerOut((Player)e)) ? "**El jugador ha sido removido: " + roomA.contains((Player)e): "**El jugador no pudo ser removido: " + roomA.contains((Player)e);
+        }
+        else if (e.getTeam().equalsIgnoreCase(teamB.getTeamName())) {
+          opMsg = (roomB.playerOut((Player)e)) ? "**El jugador ha sido removido: " + roomB.contains((Player)e): "**El jugador no pudo ser removido: " + roomB.contains((Player)e);
+        }
+        breaks = true;
+      }
+      if (breaks) continue;
+    }
+    if (!breaks) opMsg = "*El jugador que se intento remover no fue reconocido";
+    return opMsg;
+  }
+
+  /**
    * Returns the information of the club.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The information of the club is shown.<br>
@@ -329,6 +379,20 @@ public class Club {
   	return employees;
   }
 
+  /**
+   * @return the roomA
+   */
+  public Room getRoomA() {
+  	return roomA;
+  }
+
+  /**
+   * @return the roomB
+   */
+  public Room getRoomB() {
+  	return roomB;
+  }
+
   //Setters
 
   /**
@@ -351,5 +415,4 @@ public class Club {
   public void setFoundationDate(String foundationDate) {
   	this.foundationDate = foundationDate;
   }
-
 }
