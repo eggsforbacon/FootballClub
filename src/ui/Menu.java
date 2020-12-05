@@ -684,7 +684,7 @@ public class Menu {
     } else if (iDontKnowSoccer.getEmployees().get(editedEmployeeIndex) instanceof MainTrainer) {
       editMainTrainer(in, newEmployeeInfo, editedEmployeeIndex);
     } else if (iDontKnowSoccer.getEmployees().get(editedEmployeeIndex) instanceof AssistingTrainer) {
-
+      editAssistingTrainer(in, newEmployeeInfo, editedEmployeeIndex);
     }
   }
 
