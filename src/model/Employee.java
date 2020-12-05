@@ -13,6 +13,7 @@ abstract public class Employee {
   private boolean status;
   private String key;
   private String team;
+  private String type;
 
   /**
    * @param name The name of the employee. <b>Must be unique, and not empty or null</b>.<br>
@@ -102,6 +103,13 @@ abstract public class Employee {
     return team;
   }
 
+  /**
+   * @return the type
+   */
+  public String getType() {
+  	return type;
+  }
+
   //Setters
 
   /**
@@ -137,5 +145,12 @@ abstract public class Employee {
    */
   public void setTeam(String team) {
   	this.team = team;
+  }
+
+  /**
+   * @param type the type to set
+   */
+  public void setType(String type) {
+  	this.type = type;
   }
 }

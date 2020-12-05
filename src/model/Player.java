@@ -30,6 +30,7 @@ public class Player extends Employee implements Calculations{
         this.averageRating = averageRating;
         this.posIndex = posIndex;
         position = FieldPosition.get(posIndex).getName();
+        setType("Jugador");
     }
 
     @Override
@@ -41,10 +42,10 @@ public class Player extends Employee implements Calculations{
             "*Nombre del empleado: " + getName() + "\n" +
             "*ID: " + getId() + "\n" +
             "*Salario: $" + comma.format(getSalary()) + "\n" +
-            "*Tipo de empleado: Jugador\n" +
+            "*Tipo de empleado: " + getType() + "\n" +
             "*Estado: " + legibleStatus() + "\n" +
             "*Equipo: " + getTeam() + "\n" +
-            "*Posicion y numero: " + position + "(" + number + ")" + "\n" +
+            "*Posicion y numero: " + position + " (" + number + ")" + "\n" +
             "*Precio de mercado: $" + marketPrice() + "\n" +
             "*Nivel de estrella: " + String.format("%.2f",starLevel());
     }
@@ -116,9 +117,47 @@ public class Player extends Employee implements Calculations{
     }
 
     /**
+     * @return the posIndex
+     */
+    public int getPosIndex() {
+    	return posIndex;
+    }
+
+    /**
      * @return the position
      */
     public String getPosition() {
     	return position;
+    }
+
+    //Setters
+
+    /**
+     * @param number the number to set
+     */
+    public void setNumber(int number) {
+    	this.number = number;
+    }
+
+    /**
+     * @param goals the goals to set
+     */
+    public void setGoals(int goals) {
+    	this.goals = goals;
+    }
+
+    /**
+     * @param posIndex the position to set
+     */
+    public void setPosition(int posIndex) {
+    	this.posIndex = posIndex;
+      position = FieldPosition.get(posIndex).getName();
+    }
+
+    /**
+     * @param averageRating the averageRating to set
+     */
+    public void setAverageRating(double averageRating) {
+    	this.averageRating = averageRating;
     }
 }

@@ -22,6 +22,7 @@ public class MainTrainer extends Trainer implements Calculations {
         super(name,id,salary,xpYears);
         this.numberOfTeams = numberOfTeams;
         this.wonMatches = wonMatches;
+        setType("Entrenador Principal");
     }
 
     @Override
@@ -33,7 +34,7 @@ public class MainTrainer extends Trainer implements Calculations {
             "*Nombre del empleado: " + getName() + "\n" +
             "*ID: " + getId() + "\n" +
             "*Salario: $" + comma.format(getSalary()) + "\n" +
-            "*Tipo de empleado: Entrenador principal\n" +
+            "*Tipo de empleado: " + getType() + "\n" +
             "*Estado: " + legibleStatus() + "\n" +
             "*Lider del equipo: " + getTeam() + "\n" +
             "*Partidos ganados: " + wonMatches + "\n" +
@@ -55,5 +56,37 @@ public class MainTrainer extends Trainer implements Calculations {
     @Override
     public double starLevel() {
         return 5 + (wonMatches / 10);
+    }
+
+    //Getters
+
+    /**
+     * @return the wonMatches
+     */
+    public int getWonMatches() {
+    	return wonMatches;
+    }
+
+    /**
+     * @return the numberOfTeams
+     */
+    public int getNumberOfTeams() {
+    	return numberOfTeams;
+    }
+
+    //Setters
+
+    /**
+     * @param wonMatches the wonMatches to set
+     */
+    public void setWonMatches(int wonMatches) {
+    	this.wonMatches = wonMatches;
+    }
+
+    /**
+     * @param numberOfTeams the numberOfTeams to set
+     */
+    public void setNumberOfTeams(int numberOfTeams) {
+    	this.numberOfTeams = numberOfTeams;
     }
 }

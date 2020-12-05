@@ -250,7 +250,7 @@ public class Menu {
      int newXpyears = in.nextInt();
      in.nextLine();
      System.out.println("*El entrenador ha sido jugador profesional? [y/ANYKEY]:                        *");
-     strAnswer = in.nextLine();
+     proceedAnswer = in.nextLine();
      update();
      boolean newProffessional = (proceed) ? true : false;
      System.out.println("*------------------------------------------------------------------------------*");
@@ -282,7 +282,7 @@ public class Menu {
     System.out.println("*Que empleado desea remover?                                                   *");
     int i = 1;
     for (Employee e : iDontKnowSoccer.getEmployees()) {
-      System.out.println("**[" + i + "] " + e.getName() + "(" + e.getClass() + ", " + e.getStatus() + ")");
+      System.out.println("**[" + i + "] " + e.getName() + "(" + e.getType() + ", " + e.getStatus() + ")");
       i++;
     }
     int removeIndex = in.nextInt() - 1;
@@ -634,6 +634,212 @@ public class Menu {
     }
   }
 
+  /**
+   * Runs the algorithm to edit the information of an employee in the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The information of the employee is edited.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
+  private void readEditEmployee(Scanner in) throws IllegalStateException {
+    clear();
+    System.out.println("********************************************************************************");
+    System.out.println("*Escoja el empleado que desea editar:                                          *");
+    int i = 1;
+    for (Employee e : iDontKnowSoccer.getEmployees()) {
+      System.out.println("**[" + i + "] " + e.getName() + "(" + e.getType() + ", " + e.getStatus() + ")");
+    }
+    int editedEmployeeIndex = in.nextInt() - 1;
+    if (editedEmployeeIndex >= i) throw new IllegalStateException("Valor no admitido. El valor maximo es " + i + ".\nEl valor ingresado fue: " + (editedEmployeeIndex + 1));
+    in.nextLine();
+    clear();
+    System.out.println("********************************************************************************");
+    String[] newEmployeeInfo = new String[3];
+    System.out.println("*Desea editar el nombre del empleado? [y/ANYKEY]                               *");
+    proceedAnswer = in.nextLine();
+    update();
+    if (proceed) {
+      System.out.println("*Escriba el nuevo nombre del empleado:                                         *");
+      newEmployeeInfo[0]  = in.nextLine();
+    } else newEmployeeInfo[0] = iDontKnowSoccer.getEmployees().get(editedEmployeeIndex).getName();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea editar la identificacion del empleado? [y/ANYKEY]                       *");
+    proceedAnswer = in.nextLine();
+    update();
+    if (proceed) {
+      System.out.println("*Escriba la nueva identificacion (10 digitos) del empleado:                    *");
+      newEmployeeInfo[1] = in.nextLine();
+    } else newEmployeeInfo[1] = iDontKnowSoccer.getEmployees().get(editedEmployeeIndex).getId();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea editar el salario del empleado? [y/ANYKEY]                              *");
+    proceedAnswer = in.nextLine();
+    update();
+    if (proceed) {
+      System.out.println("*Escriba el nuevo salario del empleado:                                        *");
+      newEmployeeInfo[2] = in.nextLine();
+    } else newEmployeeInfo[2] = Integer.toString(iDontKnowSoccer.getEmployees().get(editedEmployeeIndex).getSalary());
+
+    System.out.println("*--------------------------------------------------------------------------------*");
+    if (iDontKnowSoccer.getEmployees().get(editedEmployeeIndex) instanceof Player) {
+      editPlayer(in,newEmployeeInfo,editedEmployeeIndex);
+    } else if (iDontKnowSoccer.getEmployees().get(editedEmployeeIndex) instanceof MainTrainer) {
+      editMainTrainer(in, newEmployeeInfo, editedEmployeeIndex);
+    } else if (iDontKnowSoccer.getEmployees().get(editedEmployeeIndex) instanceof AssistingTrainer) {
+
+    }
+  }
+
+  /**
+   * Runs the algorithm to edit a player inside the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The player is edited.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param newEmployeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+   * @param editedEmployeeIndex The index of the employee to be edited.<br>
+   */
+  private void editPlayer(Scanner in, String[] newEmployeeInfo, int editedEmployeeIndex) {
+    System.out.println("*Desea editar el numero del jugador? [y/ANYKEY]                                *");
+    proceedAnswer= in.nextLine();
+    update();
+    int newNumber;
+    if (proceed) {
+      System.out.println("*Escriba el nuevo numero del jugador:                                          *");
+      newNumber = in.nextInt();
+      in.nextLine();
+      boolean flag = false;
+      do {
+        for (Employee e : iDontKnowSoccer.getEmployees()) {
+          if (e instanceof Player && (newNumber == ((Player)e).getNumber())) {
+          System.out.println("*El numero ingresado ya se encuentra registrado. Intente nuevamente:           *");
+          newNumber = in.nextInt();
+          flag = newNumber == (((Player)e).getNumber());
+          break;
+          }
+        }
+      } while (flag);
+    } else newNumber = ((Player)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getNumber();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea editar el numero de goles anotados por el jugador? [y/ANYKEY]           *");
+    proceedAnswer = in.nextLine();
+    update();
+    int newGoals;
+    if (proceed) {
+      System.out.println("*Escriba el nuevo numero de goles anotados por el jugador:                     *");
+      newGoals = in.nextInt();
+      in.nextLine();
+    } else newGoals = ((Player)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getGoals();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea editar el promedio del jugador? [y/ANYKEY]                              *");
+    proceedAnswer = in.nextLine();
+    update();
+    double newAverage;
+    if (proceed) {
+      System.out.println("*Escriba el nuevo promedio del jugador [0 - 5]:                                *");
+      newAverage = in.nextDouble();
+      in.nextLine();
+    } else newAverage = ((Player)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getAverageRating();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea editar la posicion del jugador? [y/ANYKEY]                              *");
+    proceedAnswer = in.nextLine();
+    update();
+    int newIndex;
+    if (proceed) {
+      System.out.println("*Seleccione la nueva posicion del jugador:                                     *");
+      for (int i = 0; i < FieldPosition.values().length; i++) {
+        System.out.println("*[" + (i+1) + "] " + FieldPosition.get(i).getName());
+      }
+      newIndex = in.nextInt() - 1;
+    } else newIndex = ((Player)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getPosIndex();
+    iDontKnowSoccer.edit(editedEmployeeIndex, newEmployeeInfo, newNumber, newGoals, newAverage, newIndex);
+  }
+
+  /**
+   * Runs the algorithm to edit a main trainer inside the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The main trainer is edited.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param newEmployeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+   * @param editedEmployeeIndex The index of the employee to be edited.<br>
+   */
+  private void editMainTrainer(Scanner in, String[] newEmployeeInfo, int editedEmployeeIndex) {
+    int[] newTrainerInfo = new int[3];
+    System.out.println("*Desea editar los anios de experiencia del entrenador? [y/ANYKEY]              *");
+    proceedAnswer = in.nextLine();
+    update();
+    if (proceed) {
+      System.out.println("*Escriba los anios de experiencia del entrenador:                              *");
+      newTrainerInfo[0] = in.nextInt();
+    } else newTrainerInfo[0] = ((MainTrainer)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getXPYears();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea editar el numero de equipos que el entrenador ha liderado? [y/ANYKEY]   *");
+    proceedAnswer = in.nextLine();
+    update();
+    if (proceed) {
+      System.out.println("*Escriba el numero de equipos que el entrenador ha liderado:                   *");
+      newTrainerInfo[1] = in.nextInt();
+    } else newTrainerInfo[1] = ((MainTrainer)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getNumberOfTeams();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea editar el numero de partidos que el entrenador ha ganado? [y/ANYKEY]    *");
+    proceedAnswer = in.nextLine();
+    update();
+    if (proceed) {
+      System.out.println("*Escriba el numero de partidos que el entrenador ha ganado:                    *");
+      newTrainerInfo[2] = in.nextInt();
+    } else newTrainerInfo[2] = ((MainTrainer)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getWonMatches();
+    iDontKnowSoccer.edit(editedEmployeeIndex, newEmployeeInfo, newTrainerInfo);
+  }
+
+  /**
+   * Runs the algorithm to edit an assisting trainer inside the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The assisting trainer is edited.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param newEmployeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+   * @param editedEmployeeIndex The index of the employee to be edited.<br>
+   */
+  private void editAssistingTrainer(Scanner in, String[] newEmployeeInfo, int editedEmployeeIndex) {
+    System.out.println("*Desea editar los anios de experiencia del entrenador? [y/ANYKEY]              *");
+    proceedAnswer = in.nextLine();
+    update();
+    int newXpyears;
+    if (proceed) {
+      System.out.println("*Escriba los anios de experiencia del entrenador:                              *");
+      newXpyears = in.nextInt();
+      in.nextLine();
+    } else newXpyears = ((AssistingTrainer)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getXPYears();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea cambiar la profesionalidad del entrenador [y/ANYKEY]                    *");
+    proceedAnswer = in.nextLine();
+    update();
+    boolean newProffessional;
+    if (proceed) {
+      System.out.println("*El entrenador ha sido jugador profesional? [y/ANYKEY]:                        *");
+      proceedAnswer = in.nextLine();
+      update();
+      newProffessional = (proceed) ? true : false;
+    } else newProffessional = ((AssistingTrainer)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getIsProffesional();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Desea cambiar las experticias del entrenador? [y/ANYKEY]                      *");
+    proceedAnswer = in.nextLine();
+    update();
+    ArrayList<Integer> newExpertises = new ArrayList<>();
+    if (proceed) {
+      System.out.println("*Escriba las experticias del entrenador separadas por un espacio( ). Si solo   *");
+      System.out.println("*posee una experticia, escriba el numero que corresponde y despues espacio:    *");
+      int i = 1;
+      for (Expertise e : Expertise.values()) {
+        System.out.println("**[" + i + "] " + e.getName());
+        i++;
+      }
+      String[] newExpertisesUnparsed = in.nextLine().split(" ");
+
+      for (int j = 0; j < newExpertisesUnparsed.length; j++) {
+        int element = (Integer.parseInt(newExpertisesUnparsed[j]));
+        newExpertises.add(element - 1);
+      }
+    } else newExpertises = ((AssistingTrainer)iDontKnowSoccer.getEmployees().get(editedEmployeeIndex)).getExpertises();
+    iDontKnowSoccer.edit(editedEmployeeIndex, newEmployeeInfo, newXpyears, newProffessional, newExpertises);
+  }
+
   /*************************************************************************************************
                                             LOGIC MEMBERS
   *************************************************************************************************/
@@ -665,6 +871,7 @@ public class Menu {
         readEditTeams(in);
         break;
       case EDIT_EMPLOYEE:
+        readEditEmployee(in);
         break;
       case 0:
         exit = true;

@@ -112,6 +112,156 @@ public class Club {
   }
 
   /**
+   * Allows the edition of the players information.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The players information is edited.<br>
+   * @param editedEmployeeIndex The index of the employee that is being edited.<br>
+   * @param newEmployeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+   * @param newNumber The number of the new player. <b>Must be a positive integer</b>.<br>
+   * @param newGoals The number of goals of the new player. <b>Must be a positive integer</b>.<br>
+   * @param newAverageRating The average rating of the new player. <b>Must be between 0 and 5</b>.<br>
+   * @param newIndex The index of the position of the new player. <b>Must be between 0 and 3</b>.<br>
+   */
+  public void edit(int editedEmployeeIndex, String[] newEmployeeInfo, int newNumber, int newGoals, double newAverageRating, int newIndex) {
+    int index = 0;
+    for (Employee e : employees) {
+      if (index == editedEmployeeIndex) {
+        boolean wasInTeamA = false;
+        boolean wasInTeamB = false;
+        boolean wasInRoomA = false;
+        boolean wasInRoomB = false;
+
+        if (getTeamA().contains((Player)e)) {
+          getTeamA().getRoster().remove((Player)e);
+          wasInTeamA = true;
+        }
+        else if (getTeamB().contains((Player)e)) {
+          getTeamB().getRoster().remove((Player)e);
+          wasInTeamB = true;
+        }
+
+        if (roomA.contains((Player)e)) {
+          roomA.playerOut((Player)e);
+          wasInRoomA = true;
+        }
+        else if (roomB.contains((Player)e)) {
+          roomB.playerOut((Player)e);
+          wasInRoomB = true;
+        }
+
+        e.setName(newEmployeeInfo[0]);
+        e.setId(newEmployeeInfo[1]);
+        e.setSalary(Integer.parseInt(newEmployeeInfo[2]));
+        ((Player)e).setNumber(newNumber);
+        ((Player)e).setGoals(newGoals);
+        ((Player)e).setAverageRating(newAverageRating);
+        ((Player)e).setPosition(newIndex);
+
+        if (wasInTeamA) teamA.addPlayer((Player)e);
+        else if (wasInTeamB) teamB.addPlayer((Player)e);
+        if (wasInRoomA) roomA.playerIn((Player)e);
+        else if (wasInRoomB) roomB.playerIn((Player)e);
+        break;
+      }
+      index++;
+    }
+  }
+
+  /**
+   * Allows the edition of the main trainers information.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The main trainers information is edited.<br>
+   * @param editedEmployeeIndex The index of the employee that is being edited.<br>
+   * @param newEmployeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+   * @param newTrainerInfo The specific information of the main trainer. <b>Must not be null</b>.<br>
+   */
+  public void edit(int editedEmployeeIndex, String[] newEmployeeInfo, int[] newTrainerInfo) {
+    int index = 0;
+    for (Employee e : employees) {
+      if (index == editedEmployeeIndex) {
+        boolean wasInTeamA = false;
+        boolean wasInTeamB = false;
+        boolean wasInOffice = false;
+
+        if (getTeamA().getCoach().getKey().equals(e.getKey())) {
+          getTeamA().setCoach(null);
+          wasInTeamA = true;
+        }
+        else if (getTeamB().getCoach().getKey().equals(e.getKey())) {
+          getTeamB().setCoach(null);
+          wasInTeamB = true;
+        }
+
+        if (office.contains((Trainer)e)) {
+          office.trainerOut((Trainer)e);
+          wasInOffice = true;
+        }
+
+        e.setName(newEmployeeInfo[0]);
+        e.setId(newEmployeeInfo[1]);
+        e.setSalary(Integer.parseInt(newEmployeeInfo[2]));
+        ((MainTrainer)e).setXpYears(newTrainerInfo[0]);
+        ((MainTrainer)e).setNumberOfTeams(newTrainerInfo[1]);
+        ((MainTrainer)e).setWonMatches(newTrainerInfo[2]);
+
+        if (wasInTeamA) teamA.setCoach((MainTrainer)e);
+        else if (wasInTeamB) teamB.setCoach((MainTrainer)e);
+        if (wasInOffice) office.trainerIn((Trainer)e);
+        break;
+      }
+      index++;
+    }
+  }
+
+  /**
+   * Allows the edition of the assisting trainers information.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The assisting trainers information is edited.<br>
+   * @param editedEmployeeIndex The index of the employee that is being edited.<br>
+   * @param newEmployeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+   * @param newXpyears The years of experience of the trainer. <b>Must be positive</b>.<br>
+   * @param newProffessional Whether the assisting trainer has or not beeen a proffessional player. <b>Data type restrictions</b>.<br>
+   * @param newExpertises The expertises the trainer has. <b>Must not be null</b>.<br>
+   */
+  public void edit(int editedEmployeeIndex, String[] newEmployeeInfo, int newXpyears, boolean newProffessional, ArrayList<Integer> newExpertises) {
+    int index = 0;
+    for (Employee e : employees) {
+      if (index == editedEmployeeIndex) {
+        boolean wasInTeamA = false;
+        boolean wasInTeamB = false;
+        boolean wasInOffice = false;
+
+        if (getTeamA().getCoach().getKey().equals(e.getKey())) {
+          getTeamA().setCoach(null);
+          wasInTeamA = true;
+        }
+        else if (getTeamB().getCoach().getKey().equals(e.getKey())) {
+          getTeamB().setCoach(null);
+          wasInTeamB = true;
+        }
+
+        if (office.contains((Trainer)e)) {
+          office.trainerOut((Trainer)e);
+          wasInOffice = true;
+        }
+
+        e.setName(newEmployeeInfo[0]);
+        e.setId(newEmployeeInfo[1]);
+        e.setSalary(Integer.parseInt(newEmployeeInfo[2]));
+        ((AssistingTrainer)e).setXpYears(newXpyears);
+        ((AssistingTrainer)e).setProffessional(newProffessional);
+        ((AssistingTrainer)e).setExpertises(newExpertises);
+
+        if (wasInTeamA) teamA.setCoach((MainTrainer)e);
+        else if (wasInTeamB) teamB.setCoach((MainTrainer)e);
+        if (wasInOffice) office.trainerIn((Trainer)e);
+        break;
+      }
+      index++;
+    }
+  }
+
+  /**
    * Returns the information of the club.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The information of the club is shown.<br>

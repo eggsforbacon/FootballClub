@@ -24,6 +24,7 @@ public class AssistingTrainer extends Trainer {
         for (int i = 0; i < indexes.size(); i++) {
           expertises.add(Expertise.get(indexes.get(i)).getName());
         }
+        setType("Entrenador Asistente");
     }
 
     @Override
@@ -44,11 +45,50 @@ public class AssistingTrainer extends Trainer {
             "*Nombre del empleado: " + getName() + "\n" +
             "*ID: " + getId() + "\n" +
             "*Salario: $" + comma.format(getSalary()) + "\n" +
-            "*Tipo de empleado: Entrenador asistente\n" +
+            "*Tipo de empleado: " + getType() + "\n" +
             "*Estado: " + legibleStatus() + "\n" +
             "*Parte del equipo: " + getTeam() + "\n" +
             "*Fue jugador profesional: " + proffessionalToString + "\n" +
             "*Experticias: " + expertisesToString.toString() + "\n" +
             "*Anios de experiencia: " + getXPYears();
+    }
+
+    //Getters
+
+    /**
+     * @return the expertises
+     */
+    public ArrayList<Integer> getExpertises() {
+      ArrayList<Integer> expertisesToInt = new ArrayList<>();
+      for (String s : expertises) {
+        expertisesToInt.add(Integer.parseInt(s));
+      }
+    	return expertisesToInt;
+    }
+
+    /**
+     * @return the fact whether or not the trainer is proffessional
+     */
+    public boolean getIsProffesional() {
+      return isProffessional;
+    }
+
+    //Setters
+
+    /**
+     * @param expertises the expertises to set
+     */
+    public void setExpertises(ArrayList<Integer> expertises) {
+      this.expertises.clear();
+      for (int i = 0; i < expertises.size(); i++) {
+        this.expertises.add(Expertise.get(expertises.get(i)).getName());
+      }
+    }
+
+    /**
+     * @param isProffessional the isProffessional to set
+     */
+    public void setProffessional(boolean isProffessional) {
+    	this.isProffessional = isProffessional;
     }
 }
