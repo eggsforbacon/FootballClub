@@ -11,7 +11,7 @@ public interface Calculations {
      * <b>Pre: </b><br>
      * <b>Post: </b>The market price is calculated.<br>
      */
-    public double marketPrice();
+    public String marketPrice();
 
     /**
      * Calculates the star level of a player or main trainer.<br>

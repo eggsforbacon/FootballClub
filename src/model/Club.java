@@ -41,6 +41,100 @@ public class Club {
 
   }
 
+  /**
+   * Adds a player to the employees, a.k.a hires them.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The player is hired.<br>
+   * @param employeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+   * @param newNumber The number of the new player. <b>Must be a positive integer</b>.<br>
+   * @param newGoals The number of goals of the new player. <b>Must be a positive integer</b>.<br>
+   * @param newAverageRating The average rating of the new player. <b>Must be between 0 and 5</b>.<br>
+   * @param newIndex The index of the position of the new player. <b>Must be between 0 and 3</b>.<br>
+   */
+   public void hire(String[] employeeInfo, int newNumber, int newGoals, double newAverageRating, int newIndex) {
+     Player newPlayer = new Player(employeeInfo[0], employeeInfo[1], Integer.parseInt(employeeInfo[2]), newNumber, newGoals, newAverageRating, newIndex);
+     employees.add(newPlayer);
+   }
+
+   /**
+    * Adds a main trainer to the employees, a.k.a hires them.<br>
+    * <b>Pre: </b><br>
+    * <b>Post: </b>The main trainer is hired.<br>
+    * @param employeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+    * @param newTrainerInfo The specific information of the main trainer. <b>Must not be null</b>.<br>
+    */
+  public void hire(String[] employeeInfo, int[] newTrainerInfo) {
+    MainTrainer newMainTrainer = new MainTrainer(employeeInfo[0], employeeInfo[1], Integer.parseInt(employeeInfo[2]), newTrainerInfo[0], newTrainerInfo[1], newTrainerInfo[2]);
+    employees.add(newMainTrainer);
+  }
+
+  /**
+   * Adds a assisting trainer to the employees, a.k.a hires them.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The assisting trainer is hired.<br>
+   * @param employeeInfo The general information shared by all employees. <b>Must not be null or empty</b>.<br>
+   * @param newXpyears The years of experience of the trainer. <b>Must be positive</b>.<br>
+   * @param newProffessional Whether the assisting trainer has or not beeen a proffessional player. <b>Data type restrictions</b>.<br>
+   * @param newExpertises The expertises the trainer has. <b>Must not be null</b>.<br>
+   */
+  public void hire(String[] employeeInfo, int newXpyears, boolean newProffessional, ArrayList<Integer> newExpertises) {
+   AssistingTrainer newAssistingTrainer = new AssistingTrainer(employeeInfo[0], employeeInfo[1], Integer.parseInt(employeeInfo[2]), newXpyears, newProffessional, newExpertises);
+   employees.add(newAssistingTrainer);
+  }
+
+
+  /**
+   * Looks for every instance of the employee, then removes it.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>Every instance of the employee is removed.<br>
+   * @param removeIndex The index of the employee to be removed.<br>
+   */
+  public void fire(int removeIndex) throws IllegalArgumentException {
+    Employee remove = employees.get(removeIndex);
+    if (remove instanceof Player) {
+      if (getTeamA().contains((Player)remove)) getTeamA().getRoster().remove((Player)remove);
+      else if (getTeamB().contains((Player)remove)) getTeamB().getRoster().remove((Player)remove);
+
+      if (roomA.contains((Player)remove)) roomA.playerOut((Player)remove);
+      else if (roomB.contains((Player)remove)) roomB.playerOut((Player)remove);
+    } else if (remove instanceof MainTrainer) {
+      if (getTeamA().getCoach().getKey().equals(((MainTrainer)remove).getKey())) getTeamA().setCoach(null);
+      else if (getTeamB().getCoach().getKey().equals(((MainTrainer)remove).getKey())) getTeamB().setCoach(null);
+
+      if (office.contains((Trainer)remove)) office.trainerOut((Trainer)remove);
+    } else if (remove instanceof AssistingTrainer) {
+      if (getTeamA().contains((AssistingTrainer)remove)) getTeamA().getAssistants().remove((AssistingTrainer)remove);
+      else if (getTeamB().contains((AssistingTrainer)remove)) getTeamB().getAssistants().remove((AssistingTrainer)remove);
+
+      if (office.contains((Trainer)remove)) office.trainerOut((Trainer)remove);
+    } else throw new IllegalArgumentException("El tipo ingresado no es valido: " + remove.getClass());
+    employees.remove(remove);
+  }
+
+  /**
+   * Returns the information of the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The information of the club is shown.<br>
+   */
+  public ArrayList<String> showInfo() {
+    ArrayList<String> info = new ArrayList<>();
+    info.add("**Nombre: " + clubName);
+    info.add("**NIT: " + NIT);
+    info.add("**Fecha de fundacion: " + foundationDate);
+    info.add("**Cantidad de empleados: " + employees.size());
+    info.add("*Empleados:                                                                    *");
+
+    for (Employee e : employees) {
+      info.add(e.showInfo());
+    }
+    info.add("*------------------------------------------------------------------------------*");
+    info.add("********************************************************************************");
+    info.add("*Volver                                                                 [ENTER]*");
+    info.add("********************************************************************************");
+
+    return info;
+  }
+
   //Getters
 
   /**
@@ -106,30 +200,6 @@ public class Club {
    */
   public void setFoundationDate(String foundationDate) {
   	this.foundationDate = foundationDate;
-  }
-
-  /**
-   * Returns the information of the club.<br>
-   * <b>Pre: </b><br>
-   * <b>Post: </b>The information of the club is shown.<br>
-   */
-  public ArrayList<String> showInfo() {
-    ArrayList<String> info = new ArrayList<>();
-    info.add("**Nombre: " + clubName);
-    info.add("**NIT: " + NIT);
-    info.add("**Fecha de fundacion: " + foundationDate);
-    info.add("**Cantidad de empleados: " + employees.size());
-    info.add("*Empleados:                                                                    *");
-
-    for (Employee e : employees) {
-      info.add(e.showInfo());
-    }
-    info.add("*------------------------------------------------------------------------------*");
-    info.add("********************************************************************************");
-    info.add("*Volver                                                                 [ENTER]*");
-    info.add("********************************************************************************");
-
-    return info;
   }
 
 }

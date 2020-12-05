@@ -73,7 +73,7 @@ public class Office {
     boolean flag = false;
     for (int i = 0; i < spaces.length && !flag; i++) {
       for (int j = 0; j < spaces[0].length; j++) {
-        if (spaces[i][j].getName().equals(trainer.getName())) {
+        if (spaces[i][j].getKey().equals(trainer.getKey())) {
           spaces[i][j] = null;
           flag = true;
           break;
@@ -89,12 +89,12 @@ public class Office {
    * <b>Post: </b>The fact whether the trainer is inside the matrix or not is stated.<br>
    * @param trainer The trainer to be looked up. <b>Must not be null</b>.<br>
    */
-  private boolean contains(Trainer trainer) {
+  public boolean contains(Trainer trainer) {
     boolean flag = false;
 
     for (int i = 0; i < spaces.length; i++) {
       for (int j = 0; j < spaces[0].length; j++) {
-        if (spaces[i][j].getName().equals(trainer.getName())) {
+        if (spaces[i][j].getKey().equals(trainer.getKey())) {
           flag = true;
           break;
         }

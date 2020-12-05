@@ -79,7 +79,7 @@ public class Room {
 
     for (int i = 0; i < spaces.length && !flag; i++) {
       for (int j = 0; j < spaces[0].length; j++) {
-        if (spaces[i][j].getName().equals(player.getName())) {
+        if (spaces[i][j].getKey().equals(player.getKey())) {
           spaces[i][j] = null;
           flag = true;
           break;
@@ -96,16 +96,20 @@ public class Room {
    * <b>Post: </b>The fact whether the player is inside the matrix or not is stated.<br>
    * @param player The player to be looked up. <b>Must not be null</b>.<br>
    */
-  private boolean contains(Player player) {
+  public boolean contains(Player player) {
     boolean flag = false;
 
-    for (int i = 0; i < spaces.length; i++) {
-      for (int j = 0; j < spaces[0].length; j++) {
-        if (spaces[i][j].getName().equals(player.getName())) {
-          flag = true;
-          break;
+    try {
+      for (int i = 0; i < spaces.length; i++) {
+        for (int j = 0; j < spaces[0].length; j++) {
+          if (spaces[i][j].getKey().equals(player.getKey())) {
+            flag = true;
+            break;
+          }
         }
       }
+    } catch(NullPointerException npe) {
+      flag = false;
     }
 
     return flag;

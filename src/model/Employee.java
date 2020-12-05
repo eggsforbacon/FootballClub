@@ -12,18 +12,19 @@ abstract public class Employee {
   private int salary;
   private boolean status;
   private String key;
+  private String team;
 
   /**
    * @param name The name of the employee. <b>Must be unique, and not empty or null</b>.<br>
    * @param id The id of the employee. <b>Must be unique, and not empty or null</b>.<br>
    * @param salary The salary of the employee. <b>Must be positive</b>.<br>
-   * @param status Wether the employee is active in a team or not. <b>Data type restrictions</b>.<br>
    */
-  public Employee(String name, String id, int salary, boolean status) {
+  public Employee(String name, String id, int salary) {
       this.name = name;
       this.id = id;
       this.salary = salary;
-      this.status = status;
+      team = "Ninguno";
+      status = false;
       key = "k-";
       genKey();
   }
@@ -47,6 +48,15 @@ abstract public class Employee {
       key += dictionary[ran.nextInt(26)];
     }
   }
+
+  /**
+   * Makes the status legible.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The status is made legible.<br>
+   */
+   public String legibleStatus() {
+    return (getStatus()) ? "Activo" : "Inactivo";
+   }
 
   //Getters
 
@@ -85,6 +95,13 @@ abstract public class Employee {
   	return key;
   }
 
+  /**
+   * @return the team
+   */
+  public String getTeam() {
+    return team;
+  }
+
   //Setters
 
   /**
@@ -113,5 +130,12 @@ abstract public class Employee {
    */
   public void setStatus(boolean status) {
   	this.status = status;
+  }
+
+  /**
+   * @param team the team to set
+   */
+  public void setTeam(String team) {
+  	this.team = team;
   }
 }

@@ -139,6 +139,7 @@ public class Team {
       for (Player p : roster) {
         info.add("--" + p.getName() + ", " + p.getPosition() + ", " + p.getNumber() + "  (" + p.getGoals() + " goles)");
       }
+      info.add("********************************************************************************");
     } else {
       info.add("*No hay jugadores en el equipo por el momento.                                 *");
       info.add("********************************************************************************");
@@ -146,8 +147,8 @@ public class Team {
     if (alignments.size() != 0) {
       info.add("*Alineaciones:");
       for (Alignment a : alignments) {
-        info.add("*Fecha: " + a.getDate());
-        info.add("*Formacion:                                                                    *");
+        info.add("--Fecha: " + a.getDate());
+        info.add("--Formacion:                                                                    *");
         info.add("-----------------------");
         for (int i = 0; i < a.getSetting().length; i++) {
           StringBuilder fieldrows = new StringBuilder();
@@ -161,7 +162,9 @@ public class Team {
         }
         info.add("-----------------------");
         info.add("(" + a.revert() + ")");
+        info.add("*-------------------------------------------------------------------------------*");
       }
+      info.add("********************************************************************************");
     } else {
       info.add("*No hay alineaciones en el equipo por el momento");
     }

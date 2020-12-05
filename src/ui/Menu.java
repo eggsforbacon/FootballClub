@@ -15,7 +15,8 @@ public class Menu {
 
   private int answer = 0;
   private String strAnswer = "";
-  private boolean proceed = strAnswer.equalsIgnoreCase("y");
+  private String proceedAnswer = "";
+  private boolean proceed = proceedAnswer.equalsIgnoreCase("y");
   private boolean isInChangeMode = strAnswer.equalsIgnoreCase("c");
   private boolean isInRemoveMode = strAnswer.equalsIgnoreCase("r");
   private boolean isInAddMode = strAnswer.equalsIgnoreCase("a");
@@ -40,6 +41,13 @@ public class Menu {
   ************************************************/
   private final int TEAM_A = 1;
   private final int TEAM_B = 2;
+
+  /************************************************
+              HIRE MENU SELECTIONS
+  ************************************************/
+  private final int PLAYER = 1;
+  private final int MAIN_TRAINER = 2;
+  private final int ASSISTING_TRAINER = 3;
 
   /*************************************************************************************************
                                             MAIN MEMBERS
@@ -139,23 +147,147 @@ public class Menu {
     clear();
     System.out.println("********************************************************************************");
     System.out.println("*Desea modificar el nombre del club? [y/ANYKEY]                                *");
-    strAnswer = in.nextLine();
+    proceedAnswer = in.nextLine();
     strAnswer = (proceed) ? in.nextLine() : iDontKnowSoccer.getClubName();
     iDontKnowSoccer.setClubName(strAnswer);
     System.out.println("********************************************************************************");
     System.out.println("*Desea modificar el NIT del club? [y/ANYKEY]                                   *");
-    strAnswer = in.nextLine();
+    proceedAnswer = in.nextLine();
     strAnswer = (proceed) ? in.nextLine() : iDontKnowSoccer.getNIT();
     iDontKnowSoccer.setNIT(strAnswer);
     System.out.println("********************************************************************************");
     System.out.println("*Desea modificar la fecha de fundacion del club? [y/ANYKEY]                    *");
-    strAnswer = in.nextLine();
+    proceedAnswer = in.nextLine();
     strAnswer = (proceed) ? in.nextLine() : iDontKnowSoccer.getFoundationDate();
     iDontKnowSoccer.setFoundationDate(strAnswer);
 
     System.out.println("********************************************************************************");
     System.out.println("************************Datos modificados correctamente*************************");
     wait(1000);
+  }
+
+  /**
+   * Runs the algorithm to create an employee inside the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The employee is created, a.k.a hired.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
+  private void readHire(Scanner in) {
+    clear();
+    System.out.println("********************************************************************************");
+    System.out.println("*Que tipo de empleado desea contratar?                                         *");
+    System.out.println("*Jugador                                                                    [1]*");
+    System.out.println("*Entrenador principal                                                       [2]*");
+    System.out.println("*Entrenador asistente                                                       [3]*");
+    System.out.println("********************************************************************************");
+    System.out.println("*Volver                                                                [ANYKEY]*");
+    System.out.println("********************************************************************************");
+    answer = in.nextInt();
+    switchHire(in);
+  }
+
+  /**
+   * Runs the algorithm to create a player inside the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The player is created, a.k.a hired.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param employeeInfo A string array containing general information of the employee. <b>Must not be null</b>.<br>
+   */
+  private void readPlayer(Scanner in, String[] employeeInfo) {
+    System.out.println("*Escriba el numero del jugador:                                                *");
+    int newNumber = in.nextInt();
+    boolean flag = false;
+    do {
+      for (Employee e : iDontKnowSoccer.getEmployees()) {
+        if (e instanceof Player && (newNumber == ((Player)e).getNumber())) {
+          System.out.println("*El numero ingresado ya se encuentra registrado. Intente nuevamente:           *");
+          newNumber = in.nextInt();
+          flag = newNumber == (((Player)e).getNumber());
+          break;
+        }
+      }
+    } while (flag);
+    System.out.println("*Escriba el numero de goles anotados por el jugador:                           *");
+    int newGoals = in.nextInt();
+    System.out.println("*Escriba el promedio del jugador [0 - 5]:                                      *");
+    double newAverage = in.nextDouble();
+    System.out.println("*------------------------------------------------------------------------------*");
+    System.out.println("*Seleccione la posicion del jugador:                                           *");
+    for (int i = 0; i < FieldPosition.values().length; i++) {
+      System.out.println("*[" + (i+1) + "] " + FieldPosition.get(i).getName());
+    }
+    int newIndex = in.nextInt() - 1;
+    iDontKnowSoccer.hire(employeeInfo, newNumber, newGoals, newAverage, newIndex);
+  }
+
+  /**
+   * Runs the algorithm to create a main trainer inside the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The main trainer is created, a.k.a hired.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   * @param employeeInfo A string array containing general information of the employee. <b>Must not be null</b>.<br>
+   */
+  private void readMainTrainer(Scanner in, String[] employeeInfo) {
+    int[] newTrainerInfo = new int[3];
+     System.out.println("*Escriba los anios de experiencia del entrenador:                              *");
+     newTrainerInfo[0] = in.nextInt();
+     System.out.println("*Escriba el numero de equipos que el entrenador ha liderado:                   *");
+     newTrainerInfo[1] = in.nextInt();
+     System.out.println("*Escriba el numero de partidos que el entrenador ha ganado:                    *");
+     newTrainerInfo[2] = in.nextInt();
+     iDontKnowSoccer.hire(employeeInfo, newTrainerInfo);
+  }
+
+  /**
+    * Runs the algorithm to create an assisting trainer inside the club.<br>
+    * <b>Pre: </b><br>
+    * <b>Post: </b>The assisting trainer is created, a.k.a hired.<br>
+    * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+    * @param employeeInfo A string array containing general information of the employee. <b>Must not be null</b>.<br>
+    */
+  private void readAssistingTrainer(Scanner in, String[] employeeInfo) {
+     System.out.println("*Escriba los anios de experiencia del entrenador:                              *");
+     int newXpyears = in.nextInt();
+     in.nextLine();
+     System.out.println("*El entrenador ha sido jugador profesional? [y/ANYKEY]:                        *");
+     strAnswer = in.nextLine();
+     update();
+     boolean newProffessional = (proceed) ? true : false;
+     System.out.println("*------------------------------------------------------------------------------*");
+     System.out.println("*Escriba las experticias del entrenador separadas por un espacio( ). Si solo   *");
+     System.out.println("*posee una experticia, escriba el numero que corresponde y despues espacio:    *");
+     int i = 1;
+     for (Expertise e : Expertise.values()) {
+       System.out.println("**[" + i + "] " + e.getName());
+       i++;
+     }
+     String[] newExpertisesUnparsed = in.nextLine().split(" ");
+     ArrayList<Integer> newExpertises = new ArrayList<>();
+     for (int j = 0; j < newExpertisesUnparsed.length; j++) {
+       int element = (Integer.parseInt(newExpertisesUnparsed[j]));
+       newExpertises.add(element - 1);
+     }
+     iDontKnowSoccer.hire(employeeInfo, newXpyears, newProffessional, newExpertises);
+  }
+
+  /**
+   * Runs the algorithm to remove an employee from inside the club.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The employee is removed from the club completley.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
+  private void readFire(Scanner in) {
+    clear();
+    System.out.println("********************************************************************************");
+    System.out.println("*Que empleado desea remover?                                                   *");
+    int i = 1;
+    for (Employee e : iDontKnowSoccer.getEmployees()) {
+      System.out.println("**[" + i + "] " + e.getName() + "(" + e.getClass() + ", " + e.getStatus() + ")");
+      i++;
+    }
+    int removeIndex = in.nextInt() - 1;
+    in.nextLine();
+    iDontKnowSoccer.fire(removeIndex);
   }
 
   /**
@@ -177,7 +309,7 @@ public class Menu {
   }
 
   /**
-   * Runs the algorithm to editthe club's teams' information.<br>
+   * Runs the algorithm to edit the club's teams' information.<br>
    * <b>Pre: </b><br>
    * <b>Post: </b>The menu to select which team to edit is displayed.<br>
    * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
@@ -202,7 +334,7 @@ public class Menu {
    */
   private void readTeamA(Scanner in) throws IllegalStateException {
     System.out.println("*Desea modificar el nombre del equipo? [y/ANYKEY]                              *");
-    strAnswer = in.nextLine();
+    proceedAnswer = in.nextLine();
     update();
     String newTeamName = (proceed) ? in.nextLine() : iDontKnowSoccer.getTeamA().getTeamName();
     iDontKnowSoccer.getTeamA().setTeamName(newTeamName);
@@ -212,7 +344,7 @@ public class Menu {
     System.out.println("*Desea cambiar o remover el entrenador principal? [c/r/x]");
     strAnswer = in.nextLine();
     update();
-    if (isInChangeMode || isInRemoveMode) editCoach(in,iDontKnowSoccer.getTeamB());
+    if (isInChangeMode || isInRemoveMode) editCoach(in,iDontKnowSoccer.getTeamA());
     else if (!skipEdition) throw new IllegalStateException("Opcion invalida: " + strAnswer + "(" + skipEdition + ")");
     System.out.println("*Desea aniadir o remover entrenadores asistentes? [a/r/x]                      *");
     strAnswer = in.nextLine();
@@ -238,7 +370,7 @@ public class Menu {
    */
   private void readTeamB(Scanner in) throws IllegalStateException {
     System.out.println("*Desea modificar el nombre del equipo? [y/ANYKEY]                              *");
-    strAnswer = in.nextLine();
+    proceedAnswer = in.nextLine();
     update();
     String newTeamName = (proceed) ? in.nextLine() : iDontKnowSoccer.getTeamB().getTeamName();
     iDontKnowSoccer.getTeamB().setTeamName(newTeamName);
@@ -277,22 +409,42 @@ public class Menu {
     team.getCoach().setStatus(false);
     if (isInChangeMode) {
       System.out.println("*------------------------------------------------------------------------------*");
-      System.out.println("*Seleccione el nuevo entrenador principal escribiendo su nombre:               *");
-      for (Employee e : iDontKnowSoccer.getEmployees()) {
-        if (e instanceof MainTrainer) System.out.println("**" + e.getName());
-      }
-      String theChanged = in.nextLine();
-      for (Employee e : iDontKnowSoccer.getEmployees()) {
-        if (e instanceof MainTrainer && e.getName().equalsIgnoreCase(theChanged)) {
-          team.setCoach((MainTrainer)e);
-          e.setStatus(true);
-          break;
+      try {
+        System.out.println("*Seleccione el nuevo entrenador principal escribiendo su nombre:               *");
+        for (Employee e : iDontKnowSoccer.getEmployees()) {
+          if (e instanceof MainTrainer) System.out.println("**" + e.getName());
         }
+        String theChanged = in.nextLine();
+
+        for (Employee e : iDontKnowSoccer.getEmployees()) {
+          if (e instanceof MainTrainer && e.getName().equalsIgnoreCase(theChanged)) {
+            e.setStatus(true);
+            e.setTeam(team.getTeamName());
+            team.setCoach((MainTrainer)e);
+            break;
+          }
+        }
+      } catch(NullPointerException npe) {
+        System.out.println("*No hay entrenadores principales contratados por el momento                  *");
+        wait(1000);
       }
+
     } else {
-      System.out.println("*El entrenador principal sera removido                                         *");
-      team.setCoach(null);
-      wait(1000);
+      try {
+        System.out.println("*El entrenador principal sera removido                                         *");
+        for (Employee e : iDontKnowSoccer.getEmployees()) {
+          if (e instanceof MainTrainer && e.getName().equalsIgnoreCase(team.getCoach().getName())) {
+            e.setStatus(false);
+            e.setTeam("Ninguno");
+            team.setCoach(null);
+            break;
+          }
+        }
+      } catch(Exception e) {
+        System.out.println("*El equipo no tiene un entrenador asignado por el momento                      *");
+      } finally {
+        wait(1000);
+      }
     }
 
   }
@@ -312,47 +464,59 @@ public class Menu {
     for (Employee e : iDontKnowSoccer.getEmployees()) {
       if (e instanceof AssistingTrainer) System.out.println("**" + e.getName());;
     }
-    while (assistantsTreshold >= 0) {
-      if (assistantsTreshold == 0 && isInAddMode) {
-        System.out.println("*El numero maximo de asistentes por equipo se ha alcanzado                     *");
-        wait(1000);
-        break;
-      }
-      if (isInAddMode) {
-        String theAdded = in.nextLine();
-        for (Employee e : iDontKnowSoccer.getEmployees()) {
-          if (e instanceof AssistingTrainer && e.getName().equalsIgnoreCase(theAdded)) {
-            if (team.addAssistingTrainers((AssistingTrainer)e)) e.setStatus(true);
-            else {
-              System.out.println("*El entrenador ya se encuentra en el equipo                                    *");
-              e.setStatus(false);
-              wait(1000);
+    proceed = true;
+    try {
+      while (assistantsTreshold >= 0 && proceed) {
+        if (assistantsTreshold == 0 && isInAddMode) {
+          System.out.println("*El numero maximo de asistentes por equipo se ha alcanzado                     *");
+          wait(1000);
+          break;
+        }
+        if (isInAddMode) {
+          String theAdded = in.nextLine();
+          for (Employee e : iDontKnowSoccer.getEmployees()) {
+            if (e instanceof AssistingTrainer && e.getName().equalsIgnoreCase(theAdded)) {
+              if (team.addAssistingTrainers((AssistingTrainer)e)) {
+                e.setStatus(true);
+                e.setTeam(team.getTeamName());
+              }
+              else {
+                System.out.println("*El entrenador ya se encuentra en el equipo                                    *");
+                e.setStatus(true);
+                e.setTeam(team.getTeamName());
+                wait(1000);
+              }
+              break;
             }
-            break;
+          }
+        } else {
+          String theDeleted = in.nextLine();
+          for (Employee e : iDontKnowSoccer.getEmployees()) {
+            if (e instanceof AssistingTrainer && e.getName().equalsIgnoreCase(theDeleted)) {
+              if (team.contains((AssistingTrainer)e)) {
+                e.setStatus(false);
+                e.setTeam("Ninguno");
+                team.getAssistants().remove(e);
+              }
+              else {
+                System.out.println("*El entrenador no se encuentra en el equipo                                    *");
+                wait(1000);
+              }
+              break;
+            }
           }
         }
-      } else {
-        String theDeleted = in.nextLine();
-        for (Employee e : iDontKnowSoccer.getEmployees()) {
-          if (e instanceof AssistingTrainer && e.getName().equalsIgnoreCase(theDeleted)) {
-            if (team.contains((AssistingTrainer)e)) {
-              e.setStatus(false);
-              team.getAssistants().remove(e);
-            }
-            else {
-              System.out.println("*El entrenador no se encuentra en el equipo                                    *");
-              e.setStatus(true);
-              wait(1000);
-            }
-            break;
-          }
-        }
+        System.out.println("*------------------------------------------------------------------------------*");
+        System.out.println("*Desea seguir editando? [y/ANYKEY]                                             *");
+        proceedAnswer = in.nextLine();
+        update();
+        assistantsTreshold = LIMIT_OF_ASSISTANTS - team.getAssistants().size();
       }
-      System.out.println("*------------------------------------------------------------------------------*");
-      System.out.println("*Desea seguir editando? [y/ANYKEY]                                             *");
-      strAnswer = in.nextLine();
-      update();
-      assistantsTreshold = LIMIT_OF_ASSISTANTS - team.getAssistants().size();
+    } catch(Exception e) {
+      System.out.println("*No hay entrenadores asistentes contratados para aniadir al equipo (la lista de  *");
+      System.out.println("*empleados no contiene entrenadores asistentes) o no hay entrenadores asistentes *");
+      System.out.println("*que remover (la lista de entrenadores asistentes del equipo esta vacia)         *");
+      wait(3000);
     }
   }
 
@@ -371,47 +535,59 @@ public class Menu {
     for (Employee e : iDontKnowSoccer.getEmployees()) {
       if (e instanceof Player) System.out.println("**" + e.getName());;
     }
-    while (playerTreshold >= 0) {
-      if (playerTreshold == 0 && isInAddMode) {
-        System.out.println("*El numero maximo de jugadores por equipo se ha alcanzado                      *");
-        wait(1000);
-        break;
-      }
-      if (isInAddMode) {
-        String theAdded = in.nextLine();
-        for (Employee e : iDontKnowSoccer.getEmployees()) {
-          if (e instanceof Player && e.getName().equalsIgnoreCase(theAdded)) {
-            if (team.addPlayer((Player)e)) e.setStatus(true);
-            else {
-              System.out.println("*El jugador ya se encuentra en el equipo                                       *");
-              e.setStatus(false);
-              wait(1000);
+    proceed = true;
+    try {
+      while (playerTreshold >= 0 && proceed) {
+        if (playerTreshold == 0 && isInAddMode) {
+          System.out.println("*El numero maximo de jugadores por equipo se ha alcanzado                      *");
+          wait(1000);
+          break;
+        }
+        if (isInAddMode) {
+          String theAdded = in.nextLine();
+          for (Employee e : iDontKnowSoccer.getEmployees()) {
+            if (e instanceof Player && e.getName().equalsIgnoreCase(theAdded)) {
+              if (team.addPlayer((Player)e)) {
+                e.setStatus(true);
+                e.setTeam(team.getTeamName());
+              }
+              else {
+                System.out.println("*El jugador ya se encuentra en el equipo                                       *");
+                e.setStatus(true);
+                e.setTeam(team.getTeamName());
+                wait(1000);
+              }
+              break;
             }
-            break;
+          }
+        } else {
+          String theDeleted = in.nextLine();
+          for (Employee e : iDontKnowSoccer.getEmployees()) {
+            if (e instanceof Player && e.getName().equalsIgnoreCase(theDeleted)) {
+              if (team.contains((Player)e)) {
+                e.setStatus(false);
+                e.setTeam("Ninguno");
+                team.getRoster().remove(e);
+              }
+              else {
+                System.out.println("*El jugador no se encuentra en el equipo                                       *");
+                wait(1000);
+              }
+              break;
+            }
           }
         }
-      } else {
-        String theDeleted = in.nextLine();
-        for (Employee e : iDontKnowSoccer.getEmployees()) {
-          if (e instanceof Player && e.getName().equalsIgnoreCase(theDeleted)) {
-            if (team.contains((Player)e)) {
-              e.setStatus(false);
-              team.getRoster().remove(e);
-            }
-            else {
-              System.out.println("*El jugador no se encuentra en el equipo                                       *");
-              e.setStatus(true);
-              wait(1000);
-            }
-            break;
-          }
-        }
+        System.out.println("*------------------------------------------------------------------------------*");
+        System.out.println("*Desea seguir editando? [y/ANYKEY]                                             *");
+        proceedAnswer = in.nextLine();
+        update();
+        playerTreshold = LIMIT_OF_PLAYERS - team.getRoster().size();
       }
-      System.out.println("*------------------------------------------------------------------------------*");
-      System.out.println("*Desea seguir editando? [y/ANYKEY]                                             *");
-      strAnswer = in.nextLine();
-      update();
-      playerTreshold = LIMIT_OF_PLAYERS - team.getRoster().size();
+    } catch(Exception e) {
+      System.out.println("*No hay jugadores contratados para aniadir al equipo (la lista de empleados no   *");
+      System.out.println("*contiene jugadores) o no hay jugadores dentro del equipo que remover (la lista  *");
+      System.out.println("*de juagdores del equipo esta vacia)                                             *");
+      wait(1000);
     }
   }
 
@@ -435,6 +611,7 @@ public class Menu {
       i++;
       }
       int newIndex = in.nextInt() - 1;
+      in.nextLine();
       if ((newIndex < 0 || newIndex > 3)) throw new IllegalStateException("Respuesta invalida: " + newIndex);
       System.out.println("*------------------------------------------------------------------------------*");
       System.out.println("*Digite la formacion (De tal manera que sume 10, por ejemplo 4-4-2, con \"-\"):  *");
@@ -442,13 +619,18 @@ public class Menu {
       team.addAlignment(newDate, newIndex, newSetting);
     } else {
       System.out.println("*--------------------------------------------------------------------------------*");
-      System.out.println("*Digite el numero de alineacion que desea eliminar:                              *");
-      for (int j = 0; j < team.getAlignments().size(); j++) {
-        System.out.println("*[" + (j + 1) + "]" + team.getAlignments().get(j).revert());
+      try {
+        System.out.println("*Digite el numero de alineacion que desea eliminar:                              *");
+        for (int j = 0; j < team.getAlignments().size(); j++) {
+          System.out.println("*[" + (j + 1) + "]" + team.getAlignments().get(j).revert());
+        }
+        int oldIndex = in.nextInt() - 1;
+        if ((oldIndex < 0 || oldIndex > 3)) throw new IllegalStateException("Respuesta invalida: " + oldIndex);
+        team.getAlignments().remove(oldIndex);
+      } catch(Exception e) {
+        System.out.println("*No hay alineaciones que remover (la lista de alineaciones del equipo esta vacia)*");
+        wait(1500);
       }
-      int oldIndex = in.nextInt() - 1;
-      if ((oldIndex < 0 || oldIndex > 3)) throw new IllegalStateException("Respuesta invalida: " + oldIndex);
-      team.getAlignments().remove(oldIndex);
     }
   }
 
@@ -471,8 +653,10 @@ public class Menu {
         readModifyClub(in);
         break;
       case HIRE:
+        readHire(in);
         break;
       case FIRE:
+        readFire(in);
         break;
       case SEE_TEAMS:
         readSeeTeams(in);
@@ -541,6 +725,42 @@ public class Menu {
     }
   }
 
+  /**
+   * A logic algorithm that decides what to do according to user input on {@link #readHire(Scanner) readHire}.<br>
+   * <b>Pre: </b><br>
+   * <b>Post: </b>The program proceeds with the correct algorithm.<br>
+   * @param in A scanner object to read input. <b>Must be initialized</b>.<br>
+   */
+  private void switchHire(Scanner in) {
+    clear();
+    in.nextLine();
+    String[] employeeInfo = new String[3];
+    System.out.println("********************************************************************************");
+    System.out.println("*Escriba el nombre del empleado:                                               *");
+    employeeInfo[0]  = in.nextLine();
+    System.out.println("*Escriba la identificacion (10 digitos) del empleado:                          *");
+    employeeInfo[1] = in.nextLine();
+    System.out.println("*Escriba el salario del empleado:                                              *");
+    employeeInfo[2] = in.nextLine();
+    System.out.println("********************************************************************************");
+    switch (answer) {
+      case PLAYER:
+        readPlayer(in,employeeInfo);
+        break;
+      case MAIN_TRAINER:
+        readMainTrainer(in,employeeInfo);
+        break;
+      case ASSISTING_TRAINER:
+        readAssistingTrainer(in,employeeInfo);
+        break;
+      default:
+        break;
+    }
+    System.out.println("********************************************************************************");
+    System.out.println("***********************Empleado contratado exitosamente*************************");
+    wait(1000);
+  }
+
   /*************************************************************************************************
                                             FORMAT MEMBERS
   *************************************************************************************************/
@@ -571,7 +791,7 @@ public class Menu {
    * <b>Post: </b>Runtime is halted, and then released.<br>
    * @param millis Represents the milliseconds that runtime will be halted for. <b>Must be a positive integer</b>.<br>
    */
-  private static void wait(int millis) {
+  public static void wait(int millis) {
     try {
       Thread.sleep(millis);
     }catch (Exception e) {
@@ -585,7 +805,7 @@ public class Menu {
    * <b>Post: </b>The fields are updated.<br>
    */
   private void update() {
-    proceed = strAnswer.equalsIgnoreCase("y");
+    proceed = proceedAnswer.equalsIgnoreCase("y");
     isInChangeMode = strAnswer.equalsIgnoreCase("c");
     isInRemoveMode = strAnswer.equalsIgnoreCase("r");
     isInAddMode = strAnswer.equalsIgnoreCase("a");
