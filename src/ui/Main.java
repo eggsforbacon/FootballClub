@@ -7,7 +7,7 @@ package ui;
  */
 public class Main {
 
-  public final String VERSION = "0.11-pre";
+  public final String VERSION = "0.12-pre";
 
   public static void main(String[] args) {
     Menu m = new Menu();

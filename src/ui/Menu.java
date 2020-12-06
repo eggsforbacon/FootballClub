@@ -1056,7 +1056,7 @@ public class Menu {
    * <b>Post: </b>Runtime is halted, and then released.<br>
    * @param millis Represents the milliseconds that runtime will be halted for. <b>Must be a positive integer</b>.<br>
    */
-  public static void wait(int millis) {
+  private void wait(int millis) {
     try {
       Thread.sleep(millis);
     }catch (Exception e) {
